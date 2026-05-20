@@ -54,26 +54,29 @@ git clone https://github.com/GasonW/html-annotate.git ~/.claude/skills/annotate
 
 也可以直接把这段话发给有 shell 权限的 AI Agent：
 
-> 帮我安装 html-annotate skill。把 https://github.com/GasonW/html-annotate.git 克隆到 ~/.claude/skills/annotate。安装完成后确认 SKILL.md、assets/annotate.js、scripts/annotate-server.py 是否存在。
+```
+帮我安装 html-annotate skill。把 https://github.com/GasonW/html-annotate.git 克隆到 ~/.claude/skills/annotate。安装完成后确认 SKILL.md、assets/annotate.js、scripts/annotate-server.py 是否存在。
+```
 
 已经安装过的话，用这段话更新：
 
-> 帮我更新 html-annotate。进入 ~/.claude/skills/annotate 执行 git pull，告诉我当前最新 commit。
-
-安装后直接对 Agent 说：
-
-> /annotate path/to/report.html
-
-在浏览器里批注完成后，说一句 **"帮我根据批注修改"** —— Claude 会读取 JSON、提取图片、逐条修改源 HTML。
-
-### 不依赖 Claude Code 使用
-
-```bash
-python ~/.claude/skills/annotate/scripts/annotate-server.py /path/to/html/dir
-# → 在浏览器 http://localhost:8787/your-file.html 中批注
-# → 然后喂给任意 Agent：
-python ~/.claude/skills/annotate/scripts/read-annotations.py file.annotations.json --open-only
 ```
+帮我更新 html-annotate。进入 ~/.claude/skills/annotate 执行 git pull，告诉我当前最新 commit。
+```
+
+在使用时对 Agent 说：
+
+```
+使用 annotate 技能为当前的 html 增加批注能力
+```
+
+批注完成后，可以对 Agent 说：
+
+```
+请根据批注修改
+```
+
+Claude 会读取 JSON、提取图片、逐条修改源 HTML。
 
 ## 数据结构
 
