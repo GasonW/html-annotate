@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Annotate — 让任何 HTML 文件支持批注与 AI 协作</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --card: #fff;
+    --text: #1e293b;
+    --text2: #64748b;
+    --accent: #2563eb;
+    --border: #e2e8f0;
+    --pink: #f8f5ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "PingFang SC", sans-serif;
+    color: var(--text); background: var(--bg); line-height: 1.8; font-size: 15px;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  .hero {
+    text-align: center; padding: 60px 24px 48px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+    color: #fff; border-radius: 20px; margin-bottom: 32px;
+  }
+  .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -.5px; }
+  .hero .sub { font-size: 16px; opacity: .7; margin-bottom: 24px; }
+  .hero .badge-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .hero .badge {
+    display: inline-block; padding: 4px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; letter-spacing: .3px;
+  }
+  .hero .badge.a { background: rgba(255,255,255,.12); color: #93c5fd; }
+  .hero .badge.b { background: rgba(255,255,255,.12); color: #fde68a; }
+  .hero .badge.c { background: rgba(255,255,255,.12); color: #c4b5fd; }
+
+  section {
+    background: var(--card); border-radius: 14px; padding: 36px 32px;
+    margin-bottom: 20px; border: 1px solid var(--border);
+  }
+  h2 { font-size: 19px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  h2 .num {
+    width: 28px; height: 28px; border-radius: 8px; background: var(--accent);
+    color: #fff; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  h3 { font-size: 15px; font-weight: 600; margin: 20px 0 8px; color: #334155; }
+  p { margin-bottom: 12px; color: #334155; }
+  code {
+    background: #f1f5f9; padding: 2px 6px; border-radius: 4px;
+    font-size: 13px; font-family: "SF Mono", "Fira Code", monospace; color: #1d4ed8;
+  }
+  pre {
+    background: #1e293b; color: #e2e8f0; padding: 18px 22px; border-radius: 10px;
+    overflow-x: auto; font-size: 13px; line-height: 1.7; margin: 14px 0;
+  }
+  pre .kw { color: #c084fc; }
+  pre .str { color: #86efac; }
+  pre .cmt { color: #64748b; }
+
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 14px 0; }
+  @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
+  .ft {
+    background: #f8fafc; border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .ft .icon { font-size: 22px; margin-bottom: 6px; }
+  .ft .ft-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+  .ft .ft-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+  th, td { padding: 10px 14px; text-align: left; border: 1px solid var(--border); }
+  th { background: #f8fafc; font-weight: 600; font-size: 13px; color: var(--text2); }
+
+  .callout {
+    border-left: 4px solid var(--accent); background: #eff6ff;
+    padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 14px 0; font-size: 14px;
+  }
+
+  .flow { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 22px 0; flex-wrap: wrap; }
+  .flow .step {
+    background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px;
+    padding: 14px 20px; text-align: center; font-size: 13px; min-width: 110px;
+  }
+  .flow .step .st { font-weight: 700; color: var(--accent); }
+  .flow .arrow { font-size: 20px; color: var(--accent); }
+
+  .footer {
+    text-align: center; padding: 40px 20px; color: var(--text2); font-size: 13px;
+    border-top: 1px solid var(--border); margin-top: 32px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- Hero -->
+<div class="hero">
+  <h1>HTML Annotate</h1>
+  <div class="sub">赋予任何 HTML 可批注能力，让 AI Agent 看懂你的反馈</div>
+  <div class="badge-row">
+    <span class="badge a">选中文字 · 划线批注</span>
+    <span class="badge b">粘贴图片 · 截图反馈</span>
+    <span class="badge c">JSON 存储 · AI 可读</span>
+  </div>
+</div>
+
+<!-- What -->
+<section>
+  <h2><span class="num">1</span> 为什么需要 HTML 批注？</h2>
+
+  <p>2026 年 5 月，Anthropic 发布了一篇有影响力的文章：<strong>HTML is the new Markdown — AI 生成的内容应该用 HTML 直接呈现在浏览器里，而不是堆在 Markdown 里等着渲染。</strong>HTML 有排版、有色彩、有表格、有 callout——比 Markdown 更可读，更适合人机协作。</p>
+
+  <p>但这带来了一个关键缺口：</p>
+
+  <div class="callout">
+    <strong>Markdown 的好处是"可评论"：</strong>任何人都可以在任意行下面写一条意见。<br>
+    <strong>HTML 的问题：</strong>它好看、结构化，但<strong>没有原生的批注能力</strong>——你无法在某个标题、某段文字、某个表格单元格旁边写评论，Agent 也就无从知道"这里需要改什么"。
+  </div>
+
+  <p><strong>HTML Annotate</strong> 就是为填补这个缺口而生的。它<strong>不修改源 HTML</strong>，而是通过一个本地服务动态注入批注 UI，让你在任意 HTML 页面上做到：</p>
+
+  <div class="feature-grid">
+    <div class="ft">
+      <div class="icon">🖊️</div>
+      <div class="ft-title">文字划线 · 荧光批注</div>
+      <div class="ft-desc">选中任意文字，点击浮动按钮添加评论。弱态为荧光下划线，hover / 选中态切换为高亮背景。</div>
+    </div>
+    <div class="ft">
+      <div class="icon">🖼️</div>
+      <div class="ft-title">图片批注 · 截图即反馈</div>
+      <div class="ft-desc">Cmd+V 直接粘贴剪贴板图片，或上传文件。图片与文字评论一起存储，适合截图标注、UI 对比。</div>
+    </div>
+    <div class="ft">
+      <div class="icon">🤖</div>
+      <div class="ft-title">AI 可直接消费</div>
+      <div class="ft-desc">批注数据以 JSON 存储，图片自动提取为 PNG。Claude Code Skill 一键读取，Agent 理解意图后修改源文件。</div>
+    </div>
+    <div class="ft">
+      <div class="icon">📄</div>
+      <div class="ft-title">不侵入源文件</div>
+      <div class="ft-desc">批注数据独立存放在 <code>.annotations.json</code> 中。源 HTML 完全不被修改，可随时开关批注模式。</div>
+    </div>
+  </div>
+</section>
+
+<!-- Workflow -->
+<section>
+  <h2><span class="num">2</span> 工作流程</h2>
+
+  <div class="flow">
+    <div class="step">
+      <div class="st">1. 启动本地服务</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px;">一键 serve 目标 HTML</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step">
+      <div class="st">2. 浏览器批注</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px;">划线 + 评论 + 截图</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step">
+      <div class="st">3. 数据落盘</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px;">.annotations.json</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step">
+      <div class="st">4. AI 读取 &amp; 应用</div>
+      <div style="font-size:12px;color:#64748b;margin-top:4px;">Agent 修改源 HTML</div>
+    </div>
+  </div>
+
+  <p>整个流程的核心价值：<strong>人和 Agent 之间有了共同语言。</strong>人不需要会写代码，只需要在浏览器里圈出问题、写下意见、贴上截图。Agent 拿到结构化数据后，依序逐条解决问题。</p>
+</section>
+
+<!-- Capabilities -->
+<section>
+  <h2><span class="num">3</span> 核心能力一览</h2>
+
+  <table>
+    <thead>
+      <tr><th>能力</th><th>说明</th><th>状态</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>文字选中批注</td><td>选中任意文本节点，添加评论</td><td>✓</td></tr>
+      <tr><td>荧光高亮双态</td><td>弱态（下划线）→ hover/选中（背景高亮）</td><td>✓</td></tr>
+      <tr><td>图片粘贴</td><td>Cmd+V 粘贴剪贴板图片，支持多图</td><td>✓</td></tr>
+      <tr><td>图片上传</td><td>点击 📎 按钮选择本地图片</td><td>✓</td></tr>
+      <tr><td>编辑 &amp; 解决</td><td>修改已有批注，标记已解决后取消高亮</td><td>✓</td></tr>
+      <tr><td>侧边栏管理</td><td>全部 / 未解决 / 已解决 三视图滤波</td><td>✓</td></tr>
+      <tr><td>双向联动</td><td>点击卡片 → 滚动到高亮句；点击高亮 → 滚动到卡片</td><td>✓</td></tr>
+      <tr><td>批注折叠</td><td>长评论自动折叠，点击展开</td><td>✓</td></tr>
+      <tr><td>侧边栏折叠</td><td>收起右侧面板，释放阅读空间</td><td>✓</td></tr>
+      <tr><td>评论即编辑器</td><td>输入框嵌入侧边栏，不再遮挡正文</td><td>✓</td></tr>
+      <tr><td>JSON 持久化</td><td>HTTP API 自动写入 <code>.annotations.json</code></td><td>✓</td></tr>
+      <tr><td>刷新恢复高亮</td><td>页面刷新后自动从 JSON 重建高亮</td><td>✓</td></tr>
+      <tr><td>图片提取</td><td><code>read-annotations.py</code> 将 base64 图片提取为临时 PNG</td><td>✓</td></tr>
+      <tr><td>Claude Code Skill</td><td><code>/annotate</code> 一键启动，<code>read-annotations</code> 一键读取</td><td>✓</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Technical Design -->
+<section>
+  <h2><span class="num">4</span> 技术设计</h2>
+
+  <h3>架构原则</h3>
+  <p><strong>零侵入。</strong>源 HTML 文件不做任何修改。Python HTTP Server 在 serve 时动态注入 <code>&lt;script&gt;</code> 标签，浏览器加载独立的批注 UI 脚本。批注数据存储在独立的 JSON 文件中，与源文件完全解耦。</p>
+
+  <h3>高亮实现</h3>
+  <p>使用 <code>document.createTreeWalker()</code> 遍历选区内的文本节点，每个文本节点单独包裹 <code>&lt;span class="ann-hl"&gt;</code>，避免块级元素被内联标签包裹导致的布局破坏。</p>
+
+  <h3>浮动按钮定位</h3>
+  <p>使用 <code>mouseup</code> 事件的 <code>clientX/Y</code> 坐标直接定位，让按钮出现在鼠标松手的位置，而非选区矩形中心——减少鼠标移动距离。</p>
+
+  <h3>数据流</h3>
+  <pre><span class="cmt">// annotate.js → HTTP API → Python Server → .annotations.json</span>
+save() → POST /__ann__/api/data?file=xxx.html
+load() → GET  /__ann__/api/data?file=xxx.html
+
+<span class="cmt">// Claude reads annotations</span>
+$ python scripts/read-annotations.py xxx.annotations.json
+<span class="cmt">→ 打印未解决批注摘要</span>
+<span class="cmt">→ 提取 base64 图片为 /tmp/ann_images/ann*.png</span></pre>
+</section>
+
+<!-- Get Started -->
+<section>
+  <h2><span class="num">5</span> 快速开始</h2>
+
+  <h3>前置依赖</h3>
+  <pre>$ pip install --upgrade pip  <span class="cmt"># 仅需标准库，无需额外依赖</span></pre>
+
+  <h3>安装为 Claude Code Skill</h3>
+  <pre>$ git clone https://github.com/GasonW/html-annotate.git ~/.claude/skills/annotate</pre>
+
+  <h3>使用</h3>
+  <pre><span class="cmt"># 在 Claude Code 中</span>
+<span class="kw">/annotate</span> path/to/report.html
+
+<span class="cmt"># 浏览器中批注完成后</span>
+<span class="kw">"帮我根据批注修改"</span>
+
+<span class="cmt"># 或手动运行读取脚本</span>
+$ python scripts/read-annotations.py report.annotations.json</pre>
+</section>
+
+<div class="footer">
+  Made for the era of <strong>HTML-first AI collaboration</strong>.
+  <br><a href="https://github.com/GasonW/html-annotate">github.com/GasonW/html-annotate</a>
+</div>
+
+</div>
+</body>
+</html>

@@ -11,14 +11,15 @@
 
   let anns = [], pendingRange = null, pendingText = '', imgs = [];
   let filter = 'all', editingId = null, sidebarOpen = true;
+  let btnJustHidden = false;
 
   // --- CSS injection ---
   function injectCSS() {
     const s = document.createElement('style');
     s.textContent = `
-  span.ann-hl { background: rgba(250,204,21,.35); border-radius: 2px; cursor: pointer; transition: background .15s; }
-  span.ann-hl.active { background: rgba(249,115,22,.45); }
-  span.ann-hl.resolved { background: rgba(148,163,184,.18); }
+  span.ann-hl { background: transparent; border-bottom: 3px solid rgb(247,224,141); cursor: pointer; border-radius: 0; transition: all .15s; }
+  span.ann-hl:hover, span.ann-hl.active { background: rgb(253,241,210); border-bottom-color: transparent; border-radius: 2px; }
+  span.ann-hl.resolved { background: transparent; border-bottom-color: #94a3b8; }
 
   #ann-toolbar {
     position: fixed; top: 0; left: 0; right: 0; height: 38px; z-index: 9999;
@@ -86,6 +87,57 @@
   #ann-sidebar .sb-tabs button.active { color: #2563eb; border-bottom-color: #2563eb; }
   .ann-list { padding: 8px; }
 
+  /* --- Editor panel (embedded in sidebar) --- */
+  #ann-editor-panel {
+    display: none; padding: 14px 16px; border-bottom: 1px solid #e2e8f0;
+  }
+  #ann-editor-panel.active { display: block; }
+  #ann-editor-panel .ed-header {
+    font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px;
+  }
+  #ann-editor-panel .ed-quote {
+    font-size: 12px; color: #64748b; border-left: 3px solid #2563eb;
+    padding: 6px 10px; margin-bottom: 10px; background: #f8fafc;
+    border-radius: 0 6px 6px 0; max-height: 60px; overflow: auto; line-height: 1.5;
+  }
+  #ann-editor-panel .ed-input-box {
+    border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;
+    transition: border-color .15s;
+  }
+  #ann-editor-panel .ed-input-box:focus-within { border-color: #2563eb; }
+  #ann-editor-panel .ed-input-box textarea {
+    width: 100%; min-height: 80px; border: none; padding: 10px 12px;
+    font-size: 14px; font-family: inherit; resize: vertical;
+    line-height: 1.6; outline: none; box-sizing: border-box;
+  }
+  #ann-editor-panel .ed-input-box .ed-img-tray {
+    display: flex; gap: 6px; flex-wrap: wrap; padding: 0 10px 8px; min-height: 0;
+  }
+  #ann-editor-panel .ed-input-box .ed-img-tray:empty { display: none; }
+  #ann-editor-panel .ed-input-box .ed-img-tray img {
+    width: 56px; height: 42px; object-fit: cover; border-radius: 4px;
+    border: 1px solid #e2e8f0; cursor: pointer;
+  }
+  #ann-editor-panel .ed-input-box .ed-img-tray img:hover { opacity: .6; }
+  #ann-editor-panel .ed-input-bottom {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 6px 10px; border-top: 1px solid #f1f5f9;
+  }
+  #ann-editor-panel .ed-input-bottom .upload-btn {
+    border: none; background: none; cursor: pointer; font-size: 12px; color: #94a3b8;
+    padding: 2px 6px; border-radius: 4px;
+  }
+  #ann-editor-panel .ed-input-bottom .upload-btn:hover { background: #f1f5f9; color: #64748b; }
+  #ann-editor-panel .ed-input-bottom .hint { font-size: 11px; color: #cbd5e1; }
+  #ann-editor-panel .ed-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+  #ann-editor-panel .ed-actions button {
+    padding: 7px 18px; border-radius: 7px; font-size: 13px; cursor: pointer;
+    font-weight: 500; border: 1px solid #e2e8f0; background: #fff; color: #64748b;
+  }
+  #ann-editor-panel .ed-actions button.primary { background: #2563eb; color: #fff; border-color: #2563eb; }
+  #ann-editor-panel .ed-actions button.primary:hover { background: #1d4ed8; }
+
+  /* --- Cards --- */
   .ann-card {
     border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px;
     margin-bottom: 8px; cursor: pointer; transition: all .15s; background: #fff;
@@ -125,58 +177,6 @@
   .ann-card .ac-actions .resolve-btn { color: #059669; }
   .ann-card .ac-actions .edit-btn { color: #2563eb; }
 
-  #ann-modal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,.3);
-    z-index: 10000; display: none; align-items: center; justify-content: center;
-  }
-  #ann-modal-overlay.show { display: flex; }
-  #ann-modal {
-    background: #fff; border-radius: 14px; padding: 24px;
-    width: 460px; max-width: 90vw; box-shadow: 0 20px 60px rgba(0,0,0,.2);
-  }
-  #ann-modal h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-  #ann-modal .modal-quote {
-    font-size: 12px; color: #64748b; border-left: 3px solid #2563eb;
-    padding: 6px 10px; margin: 8px 0 14px; background: #f8fafc; border-radius: 0 6px 6px 0;
-    max-height: 80px; overflow: auto;
-  }
-  #ann-modal .input-area {
-    border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden;
-    transition: border-color .15s;
-  }
-  #ann-modal .input-area:focus-within { border-color: #2563eb; }
-  #ann-modal .input-area textarea {
-    width: 100%; min-height: 80px; border: none; padding: 10px 12px;
-    font-size: 14px; font-family: inherit; resize: vertical;
-    line-height: 1.6; outline: none; box-sizing: border-box;
-  }
-  #ann-modal .input-area .img-tray {
-    display: flex; gap: 6px; flex-wrap: wrap; padding: 0 10px 8px; min-height: 0;
-  }
-  #ann-modal .input-area .img-tray:empty { display: none; }
-  #ann-modal .input-area .img-tray img {
-    width: 56px; height: 42px; object-fit: cover; border-radius: 4px;
-    border: 1px solid #e2e8f0; cursor: pointer;
-  }
-  #ann-modal .input-area .img-tray img:hover { opacity: .6; }
-  #ann-modal .input-bottom {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 6px 10px; border-top: 1px solid #f1f5f9;
-  }
-  #ann-modal .input-bottom .upload-btn {
-    border: none; background: none; cursor: pointer; font-size: 12px; color: #94a3b8;
-    padding: 2px 6px; border-radius: 4px;
-  }
-  #ann-modal .input-bottom .upload-btn:hover { background: #f1f5f9; color: #64748b; }
-  #ann-modal .input-bottom .hint { font-size: 11px; color: #cbd5e1; }
-  #ann-modal .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
-  #ann-modal .modal-actions button {
-    padding: 7px 18px; border-radius: 7px; font-size: 13px; cursor: pointer;
-    font-weight: 500; border: 1px solid #e2e8f0; background: #fff; color: #64748b;
-  }
-  #ann-modal .modal-actions button.primary { background: #2563eb; color: #fff; border-color: #2563eb; }
-  #ann-modal .modal-actions button.primary:hover { background: #1d4ed8; }
-
   #ann-lightbox {
     position: fixed; inset: 0; background: rgba(0,0,0,.8);
     z-index: 10001; display: none; align-items: center; justify-content: center; cursor: zoom-out;
@@ -210,45 +210,38 @@
     floatBtn.id = 'ann-float-btn';
     floatBtn.textContent = '+ 添加批注';
     floatBtn.onmousedown = e => e.preventDefault();
-    floatBtn.onclick = () => openModal();
+    floatBtn.onclick = () => openEditor();
     document.body.appendChild(floatBtn);
 
     const sidebar = document.createElement('div');
     sidebar.id = 'ann-sidebar';
     sidebar.innerHTML = `
       <div class="sb-header">批注列表 <span class="sb-count" id="sb-count">0 条</span></div>
-      <div class="sb-tabs">
+      <div class="sb-tabs" id="sb-tabs">
         <button class="active" id="tab-all" onclick="ANN.setFilter('all')">全部</button>
         <button id="tab-open" onclick="ANN.setFilter('open')">未解决</button>
         <button id="tab-resolved" onclick="ANN.setFilter('resolved')">已解决</button>
       </div>
-      <div class="ann-list" id="ann-list"></div>
-    `;
-    document.body.appendChild(sidebar);
-
-    const modalOverlay = document.createElement('div');
-    modalOverlay.id = 'ann-modal-overlay';
-    modalOverlay.onclick = e => { if (e.target === modalOverlay) closeModal(); };
-    modalOverlay.innerHTML = `
-      <div id="ann-modal">
-        <h3 id="modal-title">添加批注</h3>
-        <div class="modal-quote" id="modal-quote"></div>
-        <div class="input-area">
-          <textarea id="modal-comment" placeholder="输入评论..."></textarea>
-          <div class="img-tray" id="img-tray"></div>
-          <div class="input-bottom">
-            <button class="upload-btn" onclick="document.getElementById('img-input').click()">📎 上传图片</button>
-            <input type="file" id="img-input" accept="image/*" multiple style="display:none" onchange="ANN.onFileInput(event)">
+      <div id="ann-editor-panel">
+        <div class="ed-header" id="ed-header">添加批注</div>
+        <div class="ed-quote" id="ed-quote"></div>
+        <div class="ed-input-box">
+          <textarea id="ed-comment" placeholder="输入评论..."></textarea>
+          <div class="ed-img-tray" id="ed-img-tray"></div>
+          <div class="ed-input-bottom">
+            <button class="upload-btn" onclick="document.getElementById('ed-img-input').click()">📎 上传图片</button>
+            <input type="file" id="ed-img-input" accept="image/*" multiple style="display:none" onchange="ANN.onFileInput(event)">
             <span class="hint">⌘+Enter 提交 · ⌘+V 粘贴图片</span>
           </div>
         </div>
-        <div class="modal-actions">
-          <button onclick="ANN.closeModal()">取消</button>
+        <div class="ed-actions">
+          <button onclick="ANN.closeEditor()">取消</button>
           <button class="primary" onclick="ANN.submit()">提交</button>
         </div>
       </div>
+      <div class="ann-list" id="ann-list"></div>
     `;
-    document.body.appendChild(modalOverlay);
+    document.body.appendChild(sidebar);
 
     const lightbox = document.createElement('div');
     lightbox.id = 'ann-lightbox';
@@ -260,6 +253,15 @@
   // --- Helpers ---
   function gid() { return 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
   function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'); }
+
+  // --- Sidebar open/close ---
+  function expandSidebar() {
+    if (!sidebarOpen) {
+      sidebarOpen = true;
+      document.getElementById('ann-sidebar').classList.remove('collapsed');
+      document.body.classList.remove('sb-collapsed');
+    }
+  }
 
   // --- Storage (HTTP API) ---
   async function save() {
@@ -289,16 +291,25 @@
 
   // --- Event binding ---
   function bind() {
+    document.addEventListener('mousedown', e => {
+      if (!e.target.closest('#ann-float-btn')) {
+        document.getElementById('ann-float-btn').style.display = 'none';
+        btnJustHidden = true;
+      }
+      if (!e.target.closest('span.ann-hl,.ann-card')) {
+        document.querySelectorAll('span.ann-hl.active,.ann-card.active').forEach(el => el.classList.remove('active'));
+      }
+    });
     document.addEventListener('mouseup', onUp);
     document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') { closeModal(); document.getElementById('ann-lightbox').classList.remove('show'); }
+      if (e.key === 'Escape') { closeEditor(); document.getElementById('ann-lightbox').classList.remove('show'); }
       if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' &&
-          document.getElementById('ann-modal-overlay').classList.contains('show')) {
+          document.getElementById('ann-editor-panel').classList.contains('active')) {
         e.preventDefault(); submit();
       }
     });
     document.addEventListener('paste', e => {
-      if (!document.getElementById('ann-modal-overlay').classList.contains('show')) return;
+      if (!document.getElementById('ann-editor-panel').classList.contains('active')) return;
       const items = e.clipboardData?.items;
       if (!items) return;
       for (const it of items) {
@@ -308,21 +319,20 @@
   }
 
   function onUp(e) {
-    if (e.target.closest('#ann-sidebar,#ann-toolbar,#ann-modal-overlay,#ann-float-btn')) return;
+    if (e.target.closest('#ann-sidebar,#ann-toolbar,#ann-float-btn')) return;
     const sel = window.getSelection(), text = sel?.toString().trim();
     const btn = document.getElementById('ann-float-btn');
     if (text && sel.rangeCount > 0) {
+      if (btnJustHidden && text === pendingText) { btnJustHidden = false; return; }
+      btnJustHidden = false;
       const r = sel.getRangeAt(0);
       const body = document.body;
       if (r.commonAncestorContainer === body ||
-          e.target.closest('#ann-sidebar,#ann-toolbar')) { btn.style.display = 'none'; return; }
+          e.target.closest('#ann-sidebar,#ann-toolbar')) return;
       pendingRange = r.cloneRange(); pendingText = text;
-      const rc = r.getBoundingClientRect();
-      btn.style.left = (rc.left + window.scrollX + rc.width / 2 - 40) + 'px';
-      btn.style.top = (rc.top + window.scrollY - 32) + 'px';
+      btn.style.left = (e.clientX + window.scrollX - 8) + 'px';
+      btn.style.top = (e.clientY + window.scrollY - 24) + 'px';
       btn.style.display = 'block';
-    } else {
-      setTimeout(() => btn.style.display = 'none', 150);
     }
   }
 
@@ -359,41 +369,47 @@
     });
   }
 
-  // --- Modal ---
-  function openModal() {
+  // --- Editor (in sidebar) ---
+  function openEditor() {
     if (!pendingText && !editingId) return;
     document.getElementById('ann-float-btn').style.display = 'none';
+    expandSidebar();
     const a = editingId ? anns.find(x => x.id === editingId) : null;
-    document.getElementById('modal-title').textContent = a ? '编辑批注' : '添加批注';
-    document.getElementById('modal-quote').textContent = a ? a.selectedText : pendingText;
-    document.getElementById('modal-comment').value = a ? a.comment : '';
+    document.getElementById('ed-header').textContent = a ? '编辑批注' : '添加批注';
+    document.getElementById('ed-quote').textContent = a ? a.selectedText : pendingText;
+    document.getElementById('ed-comment').value = a ? a.comment : '';
     imgs = a ? [...a.images] : [];
     renderTray();
-    document.getElementById('ann-modal-overlay').classList.add('show');
-    setTimeout(() => document.getElementById('modal-comment').focus(), 80);
+
+    document.getElementById('ann-editor-panel').classList.add('active');
+    document.getElementById('sb-tabs').style.display = 'none';
+    document.getElementById('ann-list').style.display = 'none';
+    setTimeout(() => document.getElementById('ed-comment').focus(), 80);
   }
 
-  function closeModal() {
-    document.getElementById('ann-modal-overlay').classList.remove('show');
+  function closeEditor() {
+    document.getElementById('ann-editor-panel').classList.remove('active');
+    document.getElementById('sb-tabs').style.display = '';
+    document.getElementById('ann-list').style.display = '';
     imgs = []; pendingRange = null; pendingText = ''; editingId = null;
   }
 
   function submit() {
-    const c = document.getElementById('modal-comment').value.trim();
+    const c = document.getElementById('ed-comment').value.trim();
     if (!c && imgs.length === 0) return;
     if (editingId) {
       const a = anns.find(x => x.id === editingId);
       if (a) { a.comment = c; a.images = [...imgs]; }
-      save(); render(); closeModal(); return;
+      save(); render(); closeEditor(); return;
     }
     const id = gid();
     anns.push({ id, selectedText: pendingText, comment: c, images: [...imgs], resolved: false, createdAt: Date.now() });
     if (pendingRange) try { hlRange(pendingRange, id); } catch (e) { console.warn(e); }
-    save(); render(); closeModal();
+    save(); render(); closeEditor();
     setTimeout(() => focusCard(id), 150);
   }
 
-  function startEdit(id) { editingId = id; openModal(); }
+  function startEdit(id) { editingId = id; pendingText = ''; openEditor(); }
 
   // --- Images ---
   function toB64(f) {
@@ -403,7 +419,7 @@
   }
   function onFileInput(e) { for (const f of e.target.files) if (f.type.startsWith('image/')) toB64(f); e.target.value = ''; }
   function renderTray() {
-    const t = document.getElementById('img-tray');
+    const t = document.getElementById('ed-img-tray');
     t.innerHTML = imgs.map((s, i) =>
       `<img src="${s}" title="点击移除" onclick="event.stopPropagation();ANN._rmImg(${i})">`
     ).join('');
@@ -525,19 +541,47 @@
     });
   }
 
+  // --- Restore highlights from loaded data ---
+  function restoreHighlights() {
+    anns.forEach(a => {
+      if (a.resolved) return;
+      const tns = [];
+      const tw = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode: n => {
+          const el = n.parentElement;
+          if (!el || el.closest('#ann-sidebar,#ann-toolbar,#ann-editor-panel,script,style,title,noscript')) return NodeFilter.FILTER_REJECT;
+          return el.offsetParent !== null ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+        }
+      });
+      // Avoid highlighting inside existing highlights
+      while (tw.nextNode()) {
+        if (tw.currentNode.parentElement && tw.currentNode.parentElement.classList.contains('ann-hl')) continue;
+        const idx = tw.currentNode.textContent.indexOf(a.selectedText);
+        if (idx !== -1) {
+          const r = document.createRange();
+          r.setStart(tw.currentNode, idx);
+          r.setEnd(tw.currentNode, idx + a.selectedText.length);
+          try { hlRange(r, a.id); } catch(e) { /* ignore */ }
+          return; // first match only
+        }
+      }
+    });
+  }
+
   // --- Init ---
   async function init() {
     injectCSS();
     injectHTML();
     document.body.classList.add('ann-active');
     await load();
+    restoreHighlights();
     render();
     bind();
   }
 
   // Expose global
   window.ANN = {
-    openModal, closeModal, submit, startEdit, resolve, setFilter,
+    openEditor, closeEditor, submit, startEdit, resolve, setFilter,
     toggleSidebar, focusHl, focusCard, lb, onFileInput, _rmImg,
     exportJSON, copyJSON, toggleComment
   };
