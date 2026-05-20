@@ -55,7 +55,9 @@ git clone https://github.com/GasonW/html-annotate.git ~/.claude/skills/annotate
 也可以直接把这段话发给有 shell 权限的 AI Agent：
 
 ```
-帮我安装 html-annotate skill。把 https://github.com/GasonW/html-annotate.git 克隆到 ~/.claude/skills/annotate。安装完成后确认 SKILL.md、assets/annotate.js、scripts/annotate-server.py 是否存在。
+帮我安装 annotate skill。skill 路径：https://github.com/GasonW/html-annotate.git
+
+安装完成后确认 SKILL.md、assets/annotate.js、scripts/annotate-server.py 是否存在。
 ```
 
 已经安装过的话，用这段话更新：
