@@ -41,37 +41,30 @@ Select text → Highlight → Comment + screenshots → JSON on disk → AI read
 
 ## Installation
 
-**Prerequisites:** Python 3.8+ (stdlib only, no dependencies)
-
-```bash
-git clone https://github.com/GasonW/html-annotate.git
-```
-
-Works with any AI coding agent — **Claude Code, Codex, Cursor, or any agent that can read files and run commands.**
-
-### Start the annotation server
-
-```bash
-python html-annotate/scripts/annotate-server.py /path/to/your/html/files
-open http://localhost:8787/your-file.html
-```
-
-### Read back annotations with your agent
-
-```bash
-# Print all unresolved annotations + extract images to /tmp/ann_images/
-python html-annotate/scripts/read-annotations.py your-file.annotations.json --open-only
-```
-
-Feed the output to any agent — it will see the selected text, the comment, and the image paths. Ask it to apply each annotation.
-
-### Claude Code convenience shortcut
+**Prerequisites:** Python 3.8+ and Claude Code.
 
 ```bash
 git clone https://github.com/GasonW/html-annotate.git ~/.claude/skills/annotate
 ```
 
-Then inside Claude Code: `/annotate path/to/report.html`
+Then in Claude Code:
+
+```
+/annotate path/to/report.html
+```
+
+That's it. It will start a local server, open the page in your browser, and the annotation toolbar will appear. Annotate in the browser, then say **"apply my annotations"** — Claude reads the JSON, extracts any images, and edits the source HTML.
+
+### Use without Claude Code
+
+Start the server and annotate manually, then pipe the output to any agent (Codex, Cursor, etc.):
+
+```bash
+python ~/.claude/skills/annotate/scripts/annotate-server.py /path/to/html/dir
+# → Annotate in browser at http://localhost:8787/your-file.html
+# → Then:
+python ~/.claude/skills/annotate/scripts/read-annotations.py file.annotations.json --open-only
+```
 
 ## Data Format
 

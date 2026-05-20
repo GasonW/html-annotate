@@ -46,37 +46,30 @@
 
 ## 安装
 
-**前置依赖：** Python 3.8+（仅需标准库，无额外依赖）
-
-```bash
-git clone https://github.com/GasonW/html-annotate.git
-```
-
-适用于任何 AI 编程 Agent —— **Claude Code、Codex、Cursor，或任何能读文件和执行命令的 Agent。**
-
-### 启动批注服务
-
-```bash
-python html-annotate/scripts/annotate-server.py /path/to/your/html/files
-open http://localhost:8787/your-file.html
-```
-
-### 让 Agent 读取并应用批注
-
-```bash
-# 打印所有未解决批注 + 提取图片到 /tmp/ann_images/
-python html-annotate/scripts/read-annotations.py your-file.annotations.json --open-only
-```
-
-将输出喂给任意 Agent，它就能看到每条批注的划线文字、评论内容和图片路径。告诉 Agent "逐条应用这些批注" 即可。
-
-### Claude Code 快捷方式
+**前置依赖：** Python 3.8+ 和 Claude Code。
 
 ```bash
 git clone https://github.com/GasonW/html-annotate.git ~/.claude/skills/annotate
 ```
 
-然后在 Claude Code 中输入：`/annotate path/to/report.html`
+然后在 Claude Code 中输入：
+
+```
+/annotate path/to/report.html
+```
+
+就这么简单。它会自动启动本地服务、在浏览器中打开页面，批注工具栏会出现。在浏览器里批注完成后，说一句 **"帮我根据批注修改"** —— Claude 会读取 JSON、提取图片、逐条修改源 HTML。
+
+### 不依赖 Claude Code 使用
+
+手动启动服务并批注，然后喂给任意 Agent（Codex、Cursor 等）：
+
+```bash
+python ~/.claude/skills/annotate/scripts/annotate-server.py /path/to/html/dir
+# → 在浏览器 http://localhost:8787/your-file.html 中批注
+# → 然后：
+python ~/.claude/skills/annotate/scripts/read-annotations.py file.annotations.json --open-only
+```
 
 ## 数据结构
 
