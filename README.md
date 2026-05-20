@@ -1,9 +1,9 @@
 # HTML Annotate
 
 <p align="center">
-  <b>Give any HTML file annotation superpowers. Let AI agents understand your feedback.</b>
+  <b>赋予 HTML 可批注能力，让 AI Agent 看懂你的反馈</b>
   <br><br>
-  <a href="README_CN.md">中文文档</a>
+  <a href="README_EN.md">English</a>
 </p>
 
 <p align="center">
@@ -14,66 +14,75 @@
 
 ---
 
-## Why?
+## 为什么做这个？
 
-In May 2025, Anthropic engineer **Thariq Shihipar** published "[Using Claude Code: The Unreasonable Effectiveness of HTML](https://www.anthropic.com/engineering/using-claude-code-the-unreasonable-effectiveness-of-html)". His thesis:
+2025 年 5 月，Anthropic 工程师 **Thariq Shihipar** 发表了《[Using Claude Code: The Unreasonable Effectiveness of HTML](https://www.anthropic.com/engineering/using-claude-code-the-unreasonable-effectiveness-of-html)》，核心论断：
 
-> **"HTML is the new Markdown."** — When AI becomes the author, HTML is a far better presentation layer.
+> **"HTML is the new Markdown."** — 在 AI 成为文档写作者的时代，HTML 比 Markdown 更适合做展示层。
 
-The post hit **4.4M views** in 48 hours. The community converged: **HTML for presentation, Markdown for protocol**.
+这篇文章 48 小时内获得 **440 万浏览**。社区迅速形成共识：**HTML 做界面，Markdown 做协议**。
 
-But HTML has a critical gap: **no native annotation capability**. You can't circle a sentence, leave a comment, or paste a screenshot next to a table cell. An AI agent reading the HTML has no idea what needs to change.
+但有一个致命缺口：
 
-**HTML Annotate** fills this gap. It injects annotation UI into any HTML file without modifying the source. Select text, leave comments, paste screenshots — the agent reads the structured output and applies changes.
+| Markdown | HTML |
+|----------|------|
+| 任何人都能在任意行下面写评论 | ❌ 好看、结构化，但**没有原生的批注能力** |
+| Agent 可以直接理解"这段需要改" | ❌ 你无法在某段文字旁写意见，Agent 无从知道"这里要改什么" |
+
+**HTML Annotate** 填的就是这个缺口。它不修改源文件，通过本地服务动态注入批注 UI，把任何 HTML 变成可划线、可评论、可贴图的协作文档。
 
 ```
-Select text → Highlight → Comment + screenshots → JSON on disk → AI reads → AI edits source
+选中文字 → 荧光批注 → 文字 + 图片评论 → JSON 落盘 → AI 读取 → AI 修改源文件
 ```
 
-## Features
+## 核心能力
 
-| Feature | Description |
-|---------|-------------|
-| 🖊️ **Text annotation** | Select any text, click the floating button, leave a comment |
-| 🖼️ **Image paste** | Cmd+V to paste clipboard images, or click to upload; stored alongside text |
-| 🤖 **AI-consumable output** | Annotations saved as `.annotations.json`; `read-annotations.py` extracts images as PNGs |
-| 📄 **Zero source modification** | Annotations live in a separate file — your HTML stays untouched |
+| 能力 | 说明 |
+|------|------|
+| 🖊️ **文字划线批注** | 选中任意文本，点击浮动按钮添加评论 |
+| 🖼️ **图片批注** | Cmd+V 粘贴剪贴板图片，或点击上传；图片与文字一起存储 |
+| 🤖 **AI 可直接消费** | 批注存为 `.annotations.json`；`read-annotations.py` 提取图片为 PNG，AI Agent 可直接阅读 |
+| 📄 **零侵入源文件** | 批注独立存储，源 HTML 完全不被修改 |
 
-## Installation
+## 30 秒开始
 
-**Prerequisites:** Python 3.8+ and Claude Code.
+**前置依赖：** Python 3.8+
 
 ```bash
 git clone https://github.com/GasonW/html-annotate.git ~/.claude/skills/annotate
 ```
 
-Then in Claude Code:
+也可以直接把这段话发给有 shell 权限的 AI Agent：
 
-```
-/annotate path/to/report.html
-```
+> 帮我安装 html-annotate skill。把 https://github.com/GasonW/html-annotate.git 克隆到 ~/.claude/skills/annotate。安装完成后确认 SKILL.md、assets/annotate.js、scripts/annotate-server.py 是否存在。
 
-That's it. It will start a local server, open the page in your browser, and the annotation toolbar will appear. Annotate in the browser, then say **"apply my annotations"** — Claude reads the JSON, extracts any images, and edits the source HTML.
+已经安装过的话，用这段话更新：
 
-### Use without Claude Code
+> 帮我更新 html-annotate。进入 ~/.claude/skills/annotate 执行 git pull，告诉我当前最新 commit。
 
-Start the server and annotate manually, then pipe the output to any agent (Codex, Cursor, etc.):
+安装后直接对 Agent 说：
+
+> /annotate path/to/report.html
+
+在浏览器里批注完成后，说一句 **"帮我根据批注修改"** —— Claude 会读取 JSON、提取图片、逐条修改源 HTML。
+
+### 不依赖 Claude Code 使用
 
 ```bash
 python ~/.claude/skills/annotate/scripts/annotate-server.py /path/to/html/dir
-# → Annotate in browser at http://localhost:8787/your-file.html
-# → Then:
+# → 在浏览器 http://localhost:8787/your-file.html 中批注
+# → 然后喂给任意 Agent：
 python ~/.claude/skills/annotate/scripts/read-annotations.py file.annotations.json --open-only
 ```
 
-## Data Format
+## 数据结构
 
 ```json
 [
   {
     "id": "amk7x...",
-    "selectedText": "The original selected text",
-    "comment": "The user's comment",
+    "selectedText": "用户选中的原文",
+    "comment": "用户的评论文本",
     "images": ["data:image/png;base64,..."],
     "resolved": false,
     "createdAt": 1716153600000
@@ -81,20 +90,20 @@ python ~/.claude/skills/annotate/scripts/read-annotations.py file.annotations.js
 ]
 ```
 
-Images are base64-embedded. `read-annotations.py` extracts them as PNGs so agents can view them.
+图片以 base64 内嵌在 JSON 中。`read-annotations.py` 将其提取为临时 PNG 文件供 Agent 查看。
 
-## File Structure
+## 文件结构
 
 ```
 html-annotate/
 ├── README.md
-├── README_CN.md
-├── SKILL.md                      # Claude Code skill definition
+├── README_EN.md
+├── SKILL.md                      # Claude Code skill 定义
 ├── assets/
-│   └── annotate.js               # Annotation frontend (self-contained)
+│   └── annotate.js               # 批注前端脚本（CSS/HTML/JS 全自包含）
 └── scripts/
-    ├── annotate-server.py        # Local HTTP server
-    └── read-annotations.py       # Reader + image extractor
+    ├── annotate-server.py        # 本地 HTTP 服务
+    └── read-annotations.py       # 批注读取 & 图片提取
 ```
 
 ## License
