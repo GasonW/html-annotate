@@ -628,6 +628,7 @@
       if (tn === range.startContainer) start = range.startOffset;
       if (tn === range.endContainer) end = range.endOffset;
       if (start >= end) return;
+      if (!tn.textContent.slice(start, end).trim()) return;
       const mid = tn.splitText(start);
       mid.splitText(end - start);
       const sp = document.createElement('span');
