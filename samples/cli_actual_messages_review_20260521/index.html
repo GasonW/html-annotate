@@ -1,0 +1,1091 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GSB CLI 当前真实消息审阅</title><style>
+:root{--bg:#fbfaf7;--paper:#fff;--ink:#1f2328;--muted:#5f6b7a;--line:#d8ddd2;--accent:#0f766e;--err:#b42318;--warn:#9a5b00;--ok:#167a3a;--code:#f3f5f7}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans SC","PingFang SC",Arial,sans-serif}header{background:#fff;border-bottom:1px solid var(--line);padding:32px 42px 24px}main{max-width:1280px;margin:0 auto;padding:28px 28px 70px}h1{font-size:32px;margin:0 0 10px;letter-spacing:0}h2{font-size:22px;margin:34px 0 14px}h3{font-size:17px;margin:0}.lead{max-width:1080px;color:#465160}.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.toc a{border:1px solid var(--line);border-radius:6px;background:#fff;padding:7px 10px;text-decoration:none;color:#26313d}.notice{border:1px solid #b7d5d1;border-left:4px solid var(--accent);background:#f0fdfa;padding:13px 15px;border-radius:8px;margin:14px 0}.grid{display:grid;gap:14px}.card{background:var(--paper);border:1px solid var(--line);border-radius:8px;overflow:hidden}.card.success{border-left:4px solid var(--ok)}.card.warning{border-left:4px solid #d99a00}.card.error{border-left:4px solid var(--err)}.head{padding:13px 15px;border-bottom:1px solid var(--line);background:#fbfbfa}.body{padding:14px 15px}.title{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.id{font-weight:700}.source{color:var(--muted);font-size:13px;margin-top:4px}.badge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:12px;font-weight:700}.badge.success{background:#dcfce7;color:#166534}.badge.warning{background:#fef3c7;color:#92400e}.badge.error{background:#fee2e2;color:#991b1b}.note{margin-top:10px;color:#465160;border-top:1px dashed var(--line);padding-top:10px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);border-radius:5px;padding:2px 6px}pre{margin:0;background:#111827;color:#e5e7eb;border-radius:8px;padding:14px;overflow:auto;font-size:12px;line-height:1.5}.summary{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.pill{border:1px solid var(--line);border-radius:6px;background:#fff;padding:7px 10px}.small{font-size:13px;color:var(--muted)}a{color:#0f766e}@media(max-width:800px){header{padding:24px 20px}main{padding:20px}}
+</style></head>
+<body><header><h1>GSB CLI 当前真实消息审阅</h1><div class="lead">整理时间：2026-05-21 15:26:15。这版只整理当前代码里真实存在的 CLI 输出模板；不是新协议提案。动态运行值用 <code>&lt;task-id&gt;</code>、<code>&lt;server response&gt;</code> 这类占位符表示。每张卡都有 source 行号，方便对照代码 review。</div><nav class="toc"><a href="#success">成功反馈</a><a href="#warning">Warning 反馈</a><a href="#error">错误反馈</a></nav><div class="summary"><span class="pill">成功 23 条</span><span class="pill">Warning 8 条</span><span class="pill">错误 30 条</span></div></header>
+<main data-annotate-root="gsb-cli-actual-messages-review"><div class="notice"><strong>Review 方式：</strong>请直接用 annotate 在具体 JSON 字段、message、problem、next_step、rerun 或备注上批注。页面不再内置反馈框。</div><section id="success"><h2>成功反馈 <span class="small">23 条</span></h2><div class="grid">
+<article class="card success" id="S-AUTH-LOGIN" data-annotate-id="S-AUTH-LOGIN">
+  <div class="head"><div class="title"><span class="id">S-AUTH-LOGIN</span><span class="badge success">success</span><span>auth login 登录成功</span></div><div class="source">source: scripts/gsb_cli.py:672-693</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;登录成功，session 已保存&quot;,
+  &quot;profile&quot;: &quot;&lt;profile&gt;&quot;,
+  &quot;base_url&quot;: &quot;&lt;base-url&gt;&quot;,
+  &quot;username&quot;: &quot;&lt;username&gt;&quot;,
+  &quot;role&quot;: &quot;&lt;role&gt;&quot;,
+  &quot;force_change_pw&quot;: &quot;&lt;bool&gt;&quot;,
+  &quot;next_commands&quot;: [
+    &quot;python3 scripts/gsb_cli.py dataset list&quot;,
+    &quot;python3 scripts/gsb_cli.py task create --name &lt;task-name&gt;&quot;
+  ],
+  &quot;issues&quot;: &quot;仅当 force_change_pw=true 时出现 PASSWORD_CHANGE_REQUIRED warning&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-AUTH-WHOAMI" data-annotate-id="S-AUTH-WHOAMI">
+  <div class="head"><div class="title"><span class="id">S-AUTH-WHOAMI</span><span class="badge success">success</span><span>auth whoami session 可用</span></div><div class="source">source: scripts/gsb_cli.py:696-702</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;当前 session 可用&quot;,
+  &quot;base_url&quot;: &quot;&lt;base-url&gt;&quot;,
+  &quot;user&quot;: &quot;&lt;server user object&gt;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-AUTH-LOGOUT" data-annotate-id="S-AUTH-LOGOUT">
+  <div class="head"><div class="title"><span class="id">S-AUTH-LOGOUT</span><span class="badge success">success</span><span>auth logout 本地退出</span></div><div class="source">source: scripts/gsb_cli.py:705-712</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;本地 session 已清除&quot;,
+  &quot;profile&quot;: &quot;&lt;profile&gt;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-DATASET-CHECK" data-annotate-id="S-DATASET-CHECK">
+  <div class="head"><div class="title"><span class="id">S-DATASET-CHECK</span><span class="badge success">success</span><span>dataset check 数据检查通过</span></div><div class="source">source: scripts/gsb_cli.py:532-589</div></div>
+  <div class="body"><pre>{
+  &quot;type&quot;: &quot;dataset_check&quot;,
+  &quot;format_guidance&quot;: &quot;&lt;FORMAT_GUIDANCE&gt;&quot;,
+  &quot;datasets&quot;: {
+    &quot;a&quot;: &quot;&lt;inspect_dataset_dir result&gt;&quot;,
+    &quot;b&quot;: &quot;&lt;optional inspect_dataset_dir result&gt;&quot;
+  },
+  &quot;pair&quot;: &quot;&lt;when --a and --b are provided&gt;&quot;,
+  &quot;issues&quot;: [],
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;数据检查通过&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-DATASET-UPLOAD" data-annotate-id="S-DATASET-UPLOAD">
+  <div class="head"><div class="title"><span class="id">S-DATASET-UPLOAD</span><span class="badge success">success</span><span>dataset upload 上传完成</span></div><div class="source">source: scripts/gsb_cli.py:739-786</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;数据集上传完成&quot;,
+  &quot;uploaded&quot;: [
+    {
+      &quot;label&quot;: &quot;a|b|dataset&quot;,
+      &quot;id&quot;: &quot;&lt;dataset-id&gt;&quot;,
+      &quot;name&quot;: &quot;&lt;dataset-name&gt;&quot;,
+      &quot;path&quot;: &quot;&lt;server-path&gt;&quot;,
+      &quot;json_count&quot;: &quot;&lt;count&gt;&quot;
+    }
+  ],
+  &quot;warnings&quot;: &quot;&lt;dataset check warnings&gt;&quot;,
+  &quot;next_commands&quot;: [
+    &quot;python3 scripts/gsb_cli.py task create --name &lt;task-name&gt;&quot;,
+    &quot;python3 scripts/gsb_cli.py task bind &lt;task-id&gt; --a &lt;dataset-a-id&gt; --b &lt;dataset-b-id&gt;&quot;
+  ]
+}</pre></div>
+</article>
+<article class="card success" id="S-DATASET-LIST" data-annotate-id="S-DATASET-LIST">
+  <div class="head"><div class="title"><span class="id">S-DATASET-LIST</span><span class="badge success">success</span><span>dataset list 数据集列表</span></div><div class="source">source: scripts/gsb_cli.py:789-795</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;数据集列表&quot;,
+  &quot;datasets&quot;: &quot;&lt;server grouped datasets&gt;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-DATASET-GUIDE" data-annotate-id="S-DATASET-GUIDE">
+  <div class="head"><div class="title"><span class="id">S-DATASET-GUIDE</span><span class="badge success">success</span><span>dataset guide JSON 数据结构说明</span></div><div class="source">source: scripts/gsb_cli.py:798-799</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;JSON 数据结构说明&quot;,
+  &quot;format_guidance&quot;: &quot;&lt;FORMAT_GUIDANCE&gt;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-TASK-CREATE" data-annotate-id="S-TASK-CREATE">
+  <div class="head"><div class="title"><span class="id">S-TASK-CREATE</span><span class="badge success">success</span><span>task create 任务已创建</span></div><div class="source">source: scripts/gsb_cli.py:802-825</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;任务已创建&quot;,
+  &quot;task&quot;: {
+    &quot;id&quot;: &quot;&lt;task-id&gt;&quot;,
+    &quot;name&quot;: &quot;&lt;task-name&gt;&quot;,
+    &quot;status&quot;: &quot;draft&quot;,
+    &quot;mode&quot;: &quot;gsb|preview&quot;,
+    &quot;...&quot;: &quot;&lt;server task fields&gt;&quot;
+  },
+  &quot;urls&quot;: {
+    &quot;manage&quot;: &quot;&lt;base-url&gt;/tasks/&lt;task-id&gt;/manage/&quot;,
+    &quot;evaluate&quot;: &quot;&lt;base-url&gt;/tasks/&lt;task-id&gt;/&quot;
+  },
+  &quot;next_commands&quot;: [
+    &quot;python3 scripts/gsb_cli.py task bind &lt;task-id&gt; --a &lt;dataset-a&gt; --b &lt;dataset-b&gt;&quot;,
+    &quot;python3 scripts/gsb_cli.py task setup &lt;task-id&gt; --min-per-person 0&quot;
+  ]
+}</pre><div class="note">备注：这条已经真实返回任务地址。</div></div>
+</article>
+<article class="card success" id="S-TASK-BIND" data-annotate-id="S-TASK-BIND">
+  <div class="head"><div class="title"><span class="id">S-TASK-BIND</span><span class="badge success">success</span><span>task bind 数据源已绑定</span></div><div class="source">source: scripts/gsb_cli.py:828-872</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;数据源已绑定&quot;,
+  &quot;selection&quot;: {
+    &quot;task_id&quot;: &quot;&lt;task-id&gt;&quot;,
+    &quot;data_mode&quot;: &quot;gsb|preview&quot;,
+    &quot;count_a&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;count_b&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;common_count&quot;: &quot;&lt;count&gt;&quot;
+  },
+  &quot;resolved_refs&quot;: [
+    &quot;&lt;dataset/path ref a&gt;&quot;,
+    &quot;&lt;dataset/path ref b&gt;&quot;
+  ],
+  &quot;issues&quot;: [],
+  &quot;next_commands&quot;: [
+    &quot;python3 scripts/gsb_cli.py task setup &lt;task-id&gt; --min-per-person 0&quot;,
+    &quot;python3 scripts/gsb_cli.py task preflight &lt;task-id&gt;&quot;
+  ]
+}</pre></div>
+</article>
+<article class="card success" id="S-TASK-SETUP" data-annotate-id="S-TASK-SETUP">
+  <div class="head"><div class="title"><span class="id">S-TASK-SETUP</span><span class="badge success">success</span><span>task setup 分配策略已保存</span></div><div class="source">source: scripts/gsb_cli.py:875-897</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;任务分配策略已保存&quot;,
+  &quot;config&quot;: &quot;&lt;server config&gt;&quot;,
+  &quot;next_commands&quot;: [
+    &quot;python3 scripts/gsb_cli.py task preflight &lt;task-id&gt;&quot;,
+    &quot;python3 scripts/gsb_cli.py task publish &lt;task-id&gt;&quot;
+  ]
+}</pre></div>
+</article>
+<article class="card success" id="S-TASK-CONFIG" data-annotate-id="S-TASK-CONFIG">
+  <div class="head"><div class="title"><span class="id">S-TASK-CONFIG</span><span class="badge success">success</span><span>task config 权限配置已保存</span></div><div class="source">source: scripts/gsb_cli.py:900-927</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;权限配置已保存&quot;,
+  &quot;visibility&quot;: &quot;&lt;server visibility&gt;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-RENDER-STATUS" data-annotate-id="S-RENDER-STATUS">
+  <div class="head"><div class="title"><span class="id">S-RENDER-STATUS</span><span class="badge success">success</span><span>task renderer status</span></div><div class="source">source: scripts/gsb_cli.py:930-936</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;renderer 状态&quot;,
+  &quot;renderer&quot;: &quot;&lt;server renderer status&gt;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-RENDER-UPLOAD" data-annotate-id="S-RENDER-UPLOAD">
+  <div class="head"><div class="title"><span class="id">S-RENDER-UPLOAD</span><span class="badge success">success</span><span>task renderer upload</span></div><div class="source">source: scripts/gsb_cli.py:939-971</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;renderer 已上传&quot;,
+  &quot;server_response&quot;: &quot;&lt;server response&gt;&quot;,
+  &quot;warnings&quot;: &quot;&lt;RENDER_PANEL_NOT_FOUND warning array, maybe empty&gt;&quot;,
+  &quot;next_commands&quot;: [
+    &quot;python3 scripts/gsb_cli.py task preflight &lt;task-id&gt;&quot;
+  ]
+}</pre></div>
+</article>
+<article class="card success" id="S-RENDER-CLEAR" data-annotate-id="S-RENDER-CLEAR">
+  <div class="head"><div class="title"><span class="id">S-RENDER-CLEAR</span><span class="badge success">success</span><span>task renderer clear</span></div><div class="source">source: scripts/gsb_cli.py:974-980</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;已恢复全局默认 renderer&quot;,
+  &quot;server_response&quot;: &quot;&lt;server response&gt;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-TASK-PREFLIGHT" data-annotate-id="S-TASK-PREFLIGHT">
+  <div class="head"><div class="title"><span class="id">S-TASK-PREFLIGHT</span><span class="badge success">success</span><span>task preflight 通过</span></div><div class="source">source: scripts/gsb_cli.py:983-990 + app/server.py:2192-2357</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;preflight 通过&quot;,
+  &quot;task_id&quot;: &quot;&lt;task-id&gt;&quot;,
+  &quot;task_name&quot;: &quot;&lt;task-name&gt;&quot;,
+  &quot;mode&quot;: &quot;&lt;mode&gt;&quot;,
+  &quot;status&quot;: &quot;&lt;task-status&gt;&quot;,
+  &quot;data_mode&quot;: &quot;&lt;data-mode&gt;&quot;,
+  &quot;counts&quot;: {
+    &quot;a&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;b&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;common&quot;: &quot;&lt;count&gt;&quot;
+  },
+  &quot;checks&quot;: &quot;&lt;all pass/warn checks&gt;&quot;,
+  &quot;failures&quot;: [],
+  &quot;warnings&quot;: &quot;&lt;warn checks&gt;&quot;,
+  &quot;next_command&quot;: &quot;python3 scripts/gsb_cli.py task preflight &lt;task-id&gt; --json&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-TASK-PUBLISH" data-annotate-id="S-TASK-PUBLISH">
+  <div class="head"><div class="title"><span class="id">S-TASK-PUBLISH</span><span class="badge success">success</span><span>task publish 任务已发布</span></div><div class="source">source: scripts/gsb_cli.py:993-1016</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;任务已发布&quot;,
+  &quot;status&quot;: &quot;&lt;server status, expected active&gt;&quot;,
+  &quot;preflight_warnings&quot;: &quot;&lt;preflight warnings&gt;&quot;,
+  &quot;urls&quot;: {
+    &quot;evaluate&quot;: &quot;&lt;base-url&gt;/tasks/&lt;task-id&gt;/&quot;
+  }
+}</pre><div class="note">备注：当前只返回 evaluate URL，不返回 manage URL。</div></div>
+</article>
+<article class="card success" id="S-TASK-GET" data-annotate-id="S-TASK-GET">
+  <div class="head"><div class="title"><span class="id">S-TASK-GET</span><span class="badge success">success</span><span>task get 任务详情</span></div><div class="source">source: scripts/gsb_cli.py:1019-1025</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;任务详情&quot;,
+  &quot;task&quot;: &quot;&lt;server task detail&gt;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-RESULTS-SUMMARY" data-annotate-id="S-RESULTS-SUMMARY">
+  <div class="head"><div class="title"><span class="id">S-RESULTS-SUMMARY</span><span class="badge success">success</span><span>results summary 评估结论摘要</span></div><div class="source">source: scripts/gsb_cli.py:1028-1035</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;评估结论摘要&quot;,
+  &quot;summary&quot;: &quot;&lt;server summary&gt;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="S-RESULTS-EXPORT" data-annotate-id="S-RESULTS-EXPORT">
+  <div class="head"><div class="title"><span class="id">S-RESULTS-EXPORT</span><span class="badge success">success</span><span>results export 评估结论已导出</span></div><div class="source">source: scripts/gsb_cli.py:1038-1099</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: true,
+  &quot;message&quot;: &quot;评估结论已导出&quot;,
+  &quot;output_path&quot;: &quot;&lt;absolute output path&gt;&quot;,
+  &quot;file_name&quot;: &quot;&lt;server file name&gt;&quot;,
+  &quot;bytes&quot;: &quot;&lt;downloaded byte count&gt;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="PF-PASS-TASK-EXISTS" data-annotate-id="PF-PASS-TASK-EXISTS">
+  <div class="head"><div class="title"><span class="id">PF-PASS-TASK-EXISTS</span><span class="badge success">success</span><span>preflight TASK_EXISTS</span></div><div class="source">source: app/server.py:2229-2234</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;pass&quot;,
+  &quot;severity&quot;: &quot;info&quot;,
+  &quot;code&quot;: &quot;TASK_EXISTS&quot;,
+  &quot;problem&quot;: &quot;任务存在&quot;,
+  &quot;evidence&quot;: {
+    &quot;task_id&quot;: &quot;&lt;task-id&gt;&quot;,
+    &quot;name&quot;: &quot;&lt;name&gt;&quot;,
+    &quot;status&quot;: &quot;&lt;status&gt;&quot;,
+    &quot;mode&quot;: &quot;&lt;mode&gt;&quot;
+  },
+  &quot;why&quot;: &quot;&quot;,
+  &quot;next_step&quot;: &quot;&quot;,
+  &quot;rerun&quot;: &quot;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="PF-PASS-DATA-SOURCE" data-annotate-id="PF-PASS-DATA-SOURCE">
+  <div class="head"><div class="title"><span class="id">PF-PASS-DATA-SOURCE</span><span class="badge success">success</span><span>preflight DATA_SOURCE_BOUND</span></div><div class="source">source: app/server.py:2245-2251</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;pass&quot;,
+  &quot;severity&quot;: &quot;info&quot;,
+  &quot;code&quot;: &quot;DATA_SOURCE_BOUND&quot;,
+  &quot;problem&quot;: &quot;已绑定 A/B 数据源&quot;,
+  &quot;evidence&quot;: {
+    &quot;count_a&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;count_b&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;common_count&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;version_a&quot;: &quot;&lt;name&gt;&quot;,
+    &quot;version_b&quot;: &quot;&lt;name&gt;&quot;
+  },
+  &quot;why&quot;: &quot;&quot;,
+  &quot;next_step&quot;: &quot;&quot;,
+  &quot;rerun&quot;: &quot;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="PF-PASS-SETUP" data-annotate-id="PF-PASS-SETUP">
+  <div class="head"><div class="title"><span class="id">PF-PASS-SETUP</span><span class="badge success">success</span><span>preflight SETUP_COMPLETE</span></div><div class="source">source: app/server.py:2298-2303</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;pass&quot;,
+  &quot;severity&quot;: &quot;info&quot;,
+  &quot;code&quot;: &quot;SETUP_COMPLETE&quot;,
+  &quot;problem&quot;: &quot;分配策略已配置&quot;,
+  &quot;evidence&quot;: {
+    &quot;total_items&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;min_per_person&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;anchor_count&quot;: &quot;&lt;count&gt;&quot;
+  },
+  &quot;why&quot;: &quot;&quot;,
+  &quot;next_step&quot;: &quot;&quot;,
+  &quot;rerun&quot;: &quot;&quot;
+}</pre></div>
+</article>
+<article class="card success" id="PF-PASS-CUSTOM-RENDERER" data-annotate-id="PF-PASS-CUSTOM-RENDERER">
+  <div class="head"><div class="title"><span class="id">PF-PASS-CUSTOM-RENDERER</span><span class="badge success">success</span><span>preflight CUSTOM_RENDERER_PRESENT</span></div><div class="source">source: app/server.py:2327-2331</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;pass&quot;,
+  &quot;severity&quot;: &quot;info&quot;,
+  &quot;code&quot;: &quot;CUSTOM_RENDERER_PRESENT&quot;,
+  &quot;problem&quot;: &quot;已上传任务自定义 renderer&quot;,
+  &quot;evidence&quot;: {
+    &quot;path&quot;: &quot;&lt;workspace/tasks/task-id/renderer.js&gt;&quot;
+  },
+  &quot;why&quot;: &quot;&quot;,
+  &quot;next_step&quot;: &quot;&quot;,
+  &quot;rerun&quot;: &quot;&quot;
+}</pre></div>
+</article></div></section><section id="warning"><h2>Warning 反馈 <span class="small">8 条</span></h2><div class="grid">
+<article class="card warning" id="W-AUTH-PASSWORD-CHANGE" data-annotate-id="W-AUTH-PASSWORD-CHANGE">
+  <div class="head"><div class="title"><span class="id">W-AUTH-PASSWORD-CHANGE</span><span class="badge warning">warning</span><span>PASSWORD_CHANGE_REQUIRED</span></div><div class="source">source: scripts/gsb_cli.py:685-692</div></div>
+  <div class="body"><pre>{
+  &quot;code&quot;: &quot;PASSWORD_CHANGE_REQUIRED&quot;,
+  &quot;severity&quot;: &quot;warning&quot;,
+  &quot;status&quot;: &quot;warn&quot;,
+  &quot;problem&quot;: &quot;当前账号被要求修改默认密码&quot;,
+  &quot;evidence&quot;: {
+    &quot;username&quot;: &quot;&lt;username&gt;&quot;
+  },
+  &quot;why&quot;: &quot;网页端会要求修改密码；CLI 目前不处理改密流程。&quot;,
+  &quot;next_step&quot;: &quot;在网页完成密码修改，或让管理员重置为可用密码后重新登录。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py auth login --username &lt;user&gt;&quot;
+}</pre><div class="note">备注：当前作为 auth login 成功 payload 的 issues 字段返回，而不是 warnings 字段。</div></div>
+</article>
+<article class="card warning" id="W-DATA-NESTED" data-annotate-id="W-DATA-NESTED">
+  <div class="head"><div class="title"><span class="id">W-DATA-NESTED</span><span class="badge warning">warning</span><span>NESTED_JSON_IGNORED</span></div><div class="source">source: scripts/gsb_cli.py:504-511</div></div>
+  <div class="body"><pre>{
+  &quot;code&quot;: &quot;NESTED_JSON_IGNORED&quot;,
+  &quot;severity&quot;: &quot;warning&quot;,
+  &quot;status&quot;: &quot;warn&quot;,
+  &quot;problem&quot;: &quot;&lt;label&gt;存在子目录 JSON，平台会忽略&quot;,
+  &quot;evidence&quot;: {
+    &quot;dataset_role&quot;: &quot;&lt;label&gt;&quot;,
+    &quot;count&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;samples&quot;: [
+      &quot;&lt;relative path&gt;&quot;
+    ]
+  },
+  &quot;why&quot;: &quot;服务端使用目录第一层的 *.json 作为数据集内容，不递归扫描。&quot;,
+  &quot;next_step&quot;: &quot;如这些文件应该参与评估，请移动到版本目录第一层。&quot;,
+  &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+}</pre></div>
+</article>
+<article class="card warning" id="W-DATA-NONJSON" data-annotate-id="W-DATA-NONJSON">
+  <div class="head"><div class="title"><span class="id">W-DATA-NONJSON</span><span class="badge warning">warning</span><span>NON_JSON_FILES_IGNORED</span></div><div class="source">source: scripts/gsb_cli.py:512-519</div></div>
+  <div class="body"><pre>{
+  &quot;code&quot;: &quot;NON_JSON_FILES_IGNORED&quot;,
+  &quot;severity&quot;: &quot;warning&quot;,
+  &quot;status&quot;: &quot;warn&quot;,
+  &quot;problem&quot;: &quot;&lt;label&gt;存在非 JSON 文件，平台会忽略&quot;,
+  &quot;evidence&quot;: {
+    &quot;dataset_role&quot;: &quot;&lt;label&gt;&quot;,
+    &quot;count&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;samples&quot;: [
+      &quot;&lt;file&gt;&quot;
+    ]
+  },
+  &quot;why&quot;: &quot;上传接口只保存 .json 文件；其他文件不会进入评估。&quot;,
+  &quot;next_step&quot;: &quot;如这些是源数据，请先转换为 JSON 文件夹结构。&quot;,
+  &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+}</pre></div>
+</article>
+<article class="card warning" id="W-DATA-RENDERER-LIKELY" data-annotate-id="W-DATA-RENDERER-LIKELY">
+  <div class="head"><div class="title"><span class="id">W-DATA-RENDERER-LIKELY</span><span class="badge warning">warning</span><span>CUSTOM_RENDERER_LIKELY_REQUIRED</span></div><div class="source">source: scripts/gsb_cli.py:520-528</div></div>
+  <div class="body"><pre>{
+  &quot;code&quot;: &quot;CUSTOM_RENDERER_LIKELY_REQUIRED&quot;,
+  &quot;severity&quot;: &quot;warning&quot;,
+  &quot;status&quot;: &quot;warn&quot;,
+  &quot;problem&quot;: &quot;&lt;label&gt;的 JSON 没有默认 renderer 常用字段&quot;,
+  &quot;evidence&quot;: {
+    &quot;dataset_role&quot;: &quot;&lt;label&gt;&quot;,
+    &quot;sample_keys&quot;: {
+      &quot;&lt;file&gt;.json&quot;: [
+        &quot;&lt;key&gt;&quot;
+      ]
+    }
+  },
+  &quot;why&quot;: &quot;默认 renderer 主要展示 query、response、product_cards 和 trace；其他字段需要自定义 renderer 才能清晰展示。&quot;,
+  &quot;next_step&quot;: &quot;上传任务 renderer.js，或在转换 JSON 时补充 query/response 字段。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py task renderer upload &lt;task-id&gt; &lt;renderer.js&gt;&quot;
+}</pre></div>
+</article>
+<article class="card warning" id="W-DATA-UNMATCHED" data-annotate-id="W-DATA-UNMATCHED">
+  <div class="head"><div class="title"><span class="id">W-DATA-UNMATCHED</span><span class="badge warning">warning</span><span>UNMATCHED_JSON_IGNORED</span></div><div class="source">source: scripts/gsb_cli.py:577-584</div></div>
+  <div class="body"><pre>{
+  &quot;code&quot;: &quot;UNMATCHED_JSON_IGNORED&quot;,
+  &quot;severity&quot;: &quot;warning&quot;,
+  &quot;status&quot;: &quot;warn&quot;,
+  &quot;problem&quot;: &quot;部分 JSON 只存在于一个版本中，会被平台忽略&quot;,
+  &quot;evidence&quot;: {
+    &quot;count_a&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;count_b&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;common_count&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;only_a_count&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;only_b_count&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;sample_only_a&quot;: [
+      &quot;&lt;id&gt;&quot;
+    ],
+    &quot;sample_only_b&quot;: [
+      &quot;&lt;id&gt;&quot;
+    ]
+  },
+  &quot;why&quot;: &quot;这不会阻塞上传，但这些 case 不会进入 A/B 对比评估。&quot;,
+  &quot;next_step&quot;: &quot;补齐缺失版本，或删除不参与评估的单边文件。&quot;,
+  &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+}</pre></div>
+</article>
+<article class="card warning" id="W-RENDER-NO-PANEL" data-annotate-id="W-RENDER-NO-PANEL">
+  <div class="head"><div class="title"><span class="id">W-RENDER-NO-PANEL</span><span class="badge warning">warning</span><span>RENDER_PANEL_NOT_FOUND</span></div><div class="source">source: scripts/gsb_cli.py:953-960</div></div>
+  <div class="body"><pre>{
+  &quot;code&quot;: &quot;RENDER_PANEL_NOT_FOUND&quot;,
+  &quot;severity&quot;: &quot;warning&quot;,
+  &quot;status&quot;: &quot;warn&quot;,
+  &quot;problem&quot;: &quot;renderer 中没有发现 renderPanel 标识&quot;,
+  &quot;evidence&quot;: {
+    &quot;path&quot;: &quot;&lt;renderer path&gt;&quot;
+  },
+  &quot;why&quot;: &quot;评估页通过 renderPanel(data, ...) 渲染左右面板；缺少该函数可能导致仍使用默认渲染。&quot;,
+  &quot;next_step&quot;: &quot;确认 renderer.js 定义了全局 renderPanel 函数。&quot;,
+  &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+}</pre></div>
+</article>
+<article class="card warning" id="W-PREFLIGHT-COUNT-MISMATCH" data-annotate-id="W-PREFLIGHT-COUNT-MISMATCH">
+  <div class="head"><div class="title"><span class="id">W-PREFLIGHT-COUNT-MISMATCH</span><span class="badge warning">warning</span><span>SETUP_DATA_COUNT_MISMATCH</span></div><div class="source">source: app/server.py:2282-2289</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;warn&quot;,
+  &quot;severity&quot;: &quot;warning&quot;,
+  &quot;code&quot;: &quot;SETUP_DATA_COUNT_MISMATCH&quot;,
+  &quot;problem&quot;: &quot;分配策略中的题数和当前数据源数量不一致&quot;,
+  &quot;evidence&quot;: {
+    &quot;setup_total_items&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;current_common_count&quot;: &quot;&lt;count&gt;&quot;
+  },
+  &quot;why&quot;: &quot;数据源变更后旧的分配策略可能没有覆盖当前数据。&quot;,
+  &quot;next_step&quot;: &quot;重新运行 setup，让分配策略按当前数据重新生成。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py task setup &lt;task-id&gt; --min-per-person &lt;n&gt;&quot;
+}</pre></div>
+</article>
+<article class="card warning" id="W-PREFLIGHT-DEFAULT-RENDERER" data-annotate-id="W-PREFLIGHT-DEFAULT-RENDERER">
+  <div class="head"><div class="title"><span class="id">W-PREFLIGHT-DEFAULT-RENDERER</span><span class="badge warning">warning</span><span>DEFAULT_RENDERER_IN_USE</span></div><div class="source">source: app/server.py:2333-2339</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;warn&quot;,
+  &quot;severity&quot;: &quot;warning&quot;,
+  &quot;code&quot;: &quot;DEFAULT_RENDERER_IN_USE&quot;,
+  &quot;problem&quot;: &quot;当前使用全局默认 renderer&quot;,
+  &quot;evidence&quot;: {
+    &quot;path&quot;: &quot;&lt;app/user_render.js&gt;&quot;
+  },
+  &quot;why&quot;: &quot;默认 renderer 主要展示 query、response、product_cards 和 trace；复杂自定义字段需要任务 renderer。&quot;,
+  &quot;next_step&quot;: &quot;如数据不是默认结构，请上传 Agent 编写的 renderer.js。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py task renderer upload &lt;task-id&gt; &lt;renderer.js&gt;&quot;
+}</pre></div>
+</article></div></section><section id="error"><h2>错误反馈 <span class="small">30 条</span></h2><div class="grid">
+<article class="card error" id="E-API-GENERIC" data-annotate-id="E-API-GENERIC">
+  <div class="head"><div class="title"><span class="id">E-API-GENERIC</span><span class="badge error">error</span><span>API_UNREACHABLE / API_REQUEST_FAILED</span></div><div class="source">source: scripts/gsb_cli.py:230-246</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;&lt;action&gt;失败&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;API_REQUEST_FAILED | API_UNREACHABLE&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;&lt;action&gt;失败&quot;,
+      &quot;evidence&quot;: {
+        &quot;status&quot;: &quot;&lt;http status or 0&gt;&quot;,
+        &quot;url&quot;: &quot;&lt;request url&gt;&quot;,
+        &quot;server_error&quot;: &quot;&lt;server error&gt;&quot;
+      },
+      &quot;why&quot;: &quot;CLI 调用的是网站真实 API；该错误表示服务端拒绝了当前操作或服务不可达。&quot;,
+      &quot;next_step&quot;: &quot;先根据 server_error 修正认证、权限、任务状态或输入数据；如果是 401，请重新登录。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ],
+  &quot;preflight&quot;: &quot;仅当服务端返回 preflight 时附加&quot;
+}</pre></div>
+</article>
+<article class="card error" id="E-AUTH-CREDENTIALS-MISSING" data-annotate-id="E-AUTH-CREDENTIALS-MISSING">
+  <div class="head"><div class="title"><span class="id">E-AUTH-CREDENTIALS-MISSING</span><span class="badge error">error</span><span>AUTH_CREDENTIALS_REQUIRED_OR_INVALID 缺凭据</span></div><div class="source">source: scripts/gsb_cli.py:640-649</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;登录凭据缺失或不可用&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;AUTH_CREDENTIALS_REQUIRED_OR_INVALID&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;登录凭据缺失或不可用&quot;,
+      &quot;evidence&quot;: {
+        &quot;has_username&quot;: &quot;&lt;bool&gt;&quot;,
+        &quot;has_password&quot;: &quot;&lt;bool&gt;&quot;
+      },
+      &quot;why&quot;: &quot;登录 API 需要 username 和 password。&quot;,
+      &quot;next_step&quot;: &quot;提供可用的用户名和密码；密码应通过环境变量或安全参数注入，不要写入仓库文件。&quot;,
+      &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py auth login --username &lt;user&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-AUTH-CREDENTIALS-INVALID" data-annotate-id="E-AUTH-CREDENTIALS-INVALID">
+  <div class="head"><div class="title"><span class="id">E-AUTH-CREDENTIALS-INVALID</span><span class="badge error">error</span><span>AUTH_CREDENTIALS_REQUIRED_OR_INVALID 用户名/密码错误</span></div><div class="source">source: scripts/gsb_cli.py:653-664</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;登录凭据缺失或不可用&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;AUTH_CREDENTIALS_REQUIRED_OR_INVALID&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;登录凭据缺失或不可用&quot;,
+      &quot;evidence&quot;: {
+        &quot;status&quot;: &quot;&lt;400|401&gt;&quot;,
+        &quot;server_error&quot;: &quot;用户不存在 | 密码错误 | Username and password required&quot;,
+        &quot;has_username&quot;: true,
+        &quot;has_password&quot;: true
+      },
+      &quot;why&quot;: &quot;登录 API 需要有效的 username 和 password。&quot;,
+      &quot;next_step&quot;: &quot;确认用户名和密码是否正确；如账号被重置或密码过期，请先处理账号状态后重新登录。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-DATA-DIR-NOT-FOUND" data-annotate-id="E-DATA-DIR-NOT-FOUND">
+  <div class="head"><div class="title"><span class="id">E-DATA-DIR-NOT-FOUND</span><span class="badge error">error</span><span>DATASET_DIR_NOT_FOUND / 数据目录不存在</span></div><div class="source">source: scripts/gsb_cli.py:435-442</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;数据检查失败&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;DATASET_DIR_NOT_FOUND&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;找不到&lt;label&gt;&quot;,
+      &quot;evidence&quot;: {
+        &quot;path&quot;: &quot;&lt;path&gt;&quot;,
+        &quot;dataset_role&quot;: &quot;&lt;label&gt;&quot;
+      },
+      &quot;why&quot;: &quot;平台只能上传或绑定真实存在的目录。&quot;,
+      &quot;next_step&quot;: &quot;确认路径是否拼写正确，或先完成数据转换输出。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-DATA-PATH-NOT-DIR" data-annotate-id="E-DATA-PATH-NOT-DIR">
+  <div class="head"><div class="title"><span class="id">E-DATA-PATH-NOT-DIR</span><span class="badge error">error</span><span>DATASET_PATH_NOT_DIRECTORY / 路径不是目录</span></div><div class="source">source: scripts/gsb_cli.py:444-451</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;数据检查失败&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;DATASET_PATH_NOT_DIRECTORY&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;&lt;label&gt;不是目录&quot;,
+      &quot;evidence&quot;: {
+        &quot;path&quot;: &quot;&lt;path&gt;&quot;,
+        &quot;dataset_role&quot;: &quot;&lt;label&gt;&quot;
+      },
+      &quot;why&quot;: &quot;平台上传和绑定的单位是数据集文件夹，不是单个文件。&quot;,
+      &quot;next_step&quot;: &quot;把每条 case 拆成独立 JSON 文件，放入一个版本目录。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-DATA-NON-JSON-INPUT" data-annotate-id="E-DATA-NON-JSON-INPUT">
+  <div class="head"><div class="title"><span class="id">E-DATA-NON-JSON-INPUT</span><span class="badge error">error</span><span>NON_JSON_INPUT / 第一层没有 JSON 且有可转换源文件</span></div><div class="source">source: scripts/gsb_cli.py:454-481</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;数据检查失败&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;NON_JSON_INPUT&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;&lt;label&gt;的第一层没有 .json 文件&quot;,
+      &quot;evidence&quot;: {
+        &quot;path&quot;: &quot;&lt;path&gt;&quot;,
+        &quot;dataset_role&quot;: &quot;&lt;label&gt;&quot;,
+        &quot;convertible_files&quot;: [
+          &quot;&lt;file.jsonl&gt;&quot;
+        ],
+        &quot;nested_json_files&quot;: [],
+        &quot;conversion_plan&quot;: &quot;&lt;dynamic conversion_plan&gt;&quot;
+      },
+      &quot;why&quot;: &quot;服务端只读取版本目录第一层的 .json 文件；CSV/XLSX/JSONL 不会被平台自动转换。&quot;,
+      &quot;next_step&quot;: &quot;按 evidence.conversion_plan 为每个源文件创建一个版本目录；目录名可自定。把每条记录写成一个 JSON object 文件，并用同一个稳定字段生成文件名，确保同一条 case 在每个版本目录内的 JSON 文件名完全相同。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-DATA-NO-JSON" data-annotate-id="E-DATA-NO-JSON">
+  <div class="head"><div class="title"><span class="id">E-DATA-NO-JSON</span><span class="badge error">error</span><span>NO_JSON_FILES / 第一层没有 JSON 且无 conversion_plan</span></div><div class="source">source: scripts/gsb_cli.py:454-481</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;数据检查失败&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;NO_JSON_FILES&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;&lt;label&gt;的第一层没有 .json 文件&quot;,
+      &quot;evidence&quot;: {
+        &quot;path&quot;: &quot;&lt;path&gt;&quot;,
+        &quot;dataset_role&quot;: &quot;&lt;label&gt;&quot;,
+        &quot;convertible_files&quot;: [],
+        &quot;nested_json_files&quot;: [
+          &quot;&lt;nested file&gt;&quot;
+        ],
+        &quot;conversion_plan&quot;: null
+      },
+      &quot;why&quot;: &quot;服务端只读取版本目录第一层的 .json 文件；CSV/XLSX/JSONL 不会被平台自动转换。&quot;,
+      &quot;next_step&quot;: &quot;如果 JSON 在子目录里，请把应参与评估的 .json 文件移动到该版本目录第一层；如果当前目录只有源数据文件，请先把源数据转换成“每条 case 一个 JSON object 文件”的结构。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-DATA-JSON-PARSE" data-annotate-id="E-DATA-JSON-PARSE">
+  <div class="head"><div class="title"><span class="id">E-DATA-JSON-PARSE</span><span class="badge error">error</span><span>JSON_PARSE_ERROR / JSON 无法解析</span></div><div class="source">source: scripts/gsb_cli.py:482-489</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;数据检查失败&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;JSON_PARSE_ERROR&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;&lt;label&gt;中有 JSON 文件无法解析&quot;,
+      &quot;evidence&quot;: {
+        &quot;dataset_role&quot;: &quot;&lt;label&gt;&quot;,
+        &quot;count&quot;: &quot;&lt;count&gt;&quot;,
+        &quot;samples&quot;: [
+          {
+            &quot;file&quot;: &quot;&lt;file&gt;&quot;,
+            &quot;error&quot;: &quot;&lt;parse error&gt;&quot;
+          }
+        ]
+      },
+      &quot;why&quot;: &quot;解析失败的文件不会被服务端加载，可能导致评估条数变少或变成 0。&quot;,
+      &quot;next_step&quot;: &quot;修正这些文件的 JSON 语法后重新检查。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-DATA-JSON-ROOT" data-annotate-id="E-DATA-JSON-ROOT">
+  <div class="head"><div class="title"><span class="id">E-DATA-JSON-ROOT</span><span class="badge error">error</span><span>JSON_ROOT_NOT_OBJECT / JSON 顶层不是 object</span></div><div class="source">source: scripts/gsb_cli.py:490-503</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;数据检查失败&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;JSON_ROOT_NOT_OBJECT&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;&lt;label&gt;中有 JSON 文件的顶层不是 object&quot;,
+      &quot;evidence&quot;: {
+        &quot;dataset_role&quot;: &quot;&lt;label&gt;&quot;,
+        &quot;count&quot;: &quot;&lt;count&gt;&quot;,
+        &quot;samples&quot;: [
+          {
+            &quot;file&quot;: &quot;&lt;file&gt;&quot;,
+            &quot;type&quot;: &quot;list&quot;
+          }
+        ],
+        &quot;expected_shape&quot;: &quot;&lt;FORMAT_GUIDANCE.json_file_shape&gt;&quot;,
+        &quot;folder_shape&quot;: &quot;&lt;FORMAT_GUIDANCE.gsb_folder_shape&gt;&quot;
+      },
+      &quot;why&quot;: &quot;当前服务端按 dict/object 读取字段；数组、字符串或数字顶层会被跳过。&quot;,
+      &quot;next_step&quot;: &quot;把每条 case 转成一个 JSON object，例如 {\&quot;query\&quot;:\&quot;...\&quot;,\&quot;response\&quot;:\&quot;...\&quot;}。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-DATA-ZERO-COMMON" data-annotate-id="E-DATA-ZERO-COMMON">
+  <div class="head"><div class="title"><span class="id">E-DATA-ZERO-COMMON</span><span class="badge error">error</span><span>ZERO_COMMON_ITEMS / A/B 无同名 JSON</span></div><div class="source">source: scripts/gsb_cli.py:569-576</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;数据检查失败&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;ZERO_COMMON_ITEMS&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;A/B 版本没有同名 JSON 文件，评估任务会是 0 条&quot;,
+      &quot;evidence&quot;: {
+        &quot;count_a&quot;: &quot;&lt;count&gt;&quot;,
+        &quot;count_b&quot;: &quot;&lt;count&gt;&quot;,
+        &quot;common_count&quot;: 0,
+        &quot;sample_only_a&quot;: [
+          &quot;&lt;id&gt;&quot;
+        ],
+        &quot;sample_only_b&quot;: [
+          &quot;&lt;id&gt;&quot;
+        ]
+      },
+      &quot;why&quot;: &quot;平台把去掉 .json 后的文件名作为 query_id，只展示两个版本目录内都存在的同名 JSON。&quot;,
+      &quot;next_step&quot;: &quot;把同一条 case 在两个版本目录内保存为完全相同的文件名，例如 item_0001.json。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-DATA-PAIR-UPLOAD" data-annotate-id="E-DATA-PAIR-UPLOAD">
+  <div class="head"><div class="title"><span class="id">E-DATA-PAIR-UPLOAD</span><span class="badge error">error</span><span>PAIR_UPLOAD_REQUIRES_A_AND_B</span></div><div class="source">source: scripts/gsb_cli.py:741-753</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;成对上传需要同时提供 --a 和 --b&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;PAIR_UPLOAD_REQUIRES_A_AND_B&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;缺少一个版本目录&quot;,
+      &quot;evidence&quot;: {
+        &quot;a&quot;: &quot;&lt;args.a&gt;&quot;,
+        &quot;b&quot;: &quot;&lt;args.b&gt;&quot;
+      },
+      &quot;why&quot;: &quot;GSB 对比需要两个版本目录。&quot;,
+      &quot;next_step&quot;: &quot;补齐 --a 和 --b 后重新运行。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-DATASET-REF-NOT-FOUND" data-annotate-id="E-DATASET-REF-NOT-FOUND">
+  <div class="head"><div class="title"><span class="id">E-DATASET-REF-NOT-FOUND</span><span class="badge error">error</span><span>DATASET_REF_NOT_FOUND</span></div><div class="source">source: scripts/gsb_cli.py:600-619 + 835-844</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;数据集引用无法解析&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;DATASET_REF_NOT_FOUND&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;数据集引用无法解析&quot;,
+      &quot;evidence&quot;: {
+        &quot;code&quot;: &quot;DATASET_REF_NOT_FOUND&quot;,
+        &quot;ref&quot;: &quot;&lt;ref&gt;&quot;,
+        &quot;known_samples&quot;: [
+          {
+            &quot;id&quot;: &quot;&lt;id&gt;&quot;,
+            &quot;name&quot;: &quot;&lt;name&gt;&quot;
+          }
+        ]
+      },
+      &quot;why&quot;: &quot;绑定接口需要服务端可访问的数据集路径。&quot;,
+      &quot;next_step&quot;: &quot;先运行 dataset list，使用明确的 id；或先 dataset upload。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-DATASET-REF-AMBIGUOUS" data-annotate-id="E-DATASET-REF-AMBIGUOUS">
+  <div class="head"><div class="title"><span class="id">E-DATASET-REF-AMBIGUOUS</span><span class="badge error">error</span><span>DATASET_REF_AMBIGUOUS</span></div><div class="source">source: scripts/gsb_cli.py:600-619 + 835-844</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;数据集引用无法解析&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;DATASET_REF_AMBIGUOUS&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;数据集引用无法解析&quot;,
+      &quot;evidence&quot;: {
+        &quot;code&quot;: &quot;DATASET_REF_AMBIGUOUS&quot;,
+        &quot;ref&quot;: &quot;&lt;ref&gt;&quot;,
+        &quot;matches&quot;: [
+          {
+            &quot;id&quot;: &quot;&lt;id&gt;&quot;,
+            &quot;name&quot;: &quot;&lt;name&gt;&quot;,
+            &quot;path&quot;: &quot;&lt;path&gt;&quot;
+          }
+        ]
+      },
+      &quot;why&quot;: &quot;绑定接口需要服务端可访问的数据集路径。&quot;,
+      &quot;next_step&quot;: &quot;先运行 dataset list，使用明确的 id；或先 dataset upload。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-TASK-BIND-ZERO" data-annotate-id="E-TASK-BIND-ZERO">
+  <div class="head"><div class="title"><span class="id">E-TASK-BIND-ZERO</span><span class="badge error">error</span><span>ZERO_COMMON_ITEMS_AFTER_BIND</span></div><div class="source">source: scripts/gsb_cli.py:852-872</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;数据源绑定后发现阻塞问题&quot;,
+  &quot;selection&quot;: &quot;&lt;server selection&gt;&quot;,
+  &quot;resolved_refs&quot;: &quot;&lt;resolved refs&gt;&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;ZERO_COMMON_ITEMS_AFTER_BIND&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;数据源已绑定但共同题数为 0&quot;,
+      &quot;evidence&quot;: {
+        &quot;count_a&quot;: &quot;&lt;count&gt;&quot;,
+        &quot;count_b&quot;: &quot;&lt;count&gt;&quot;,
+        &quot;common_count&quot;: 0
+      },
+      &quot;why&quot;: &quot;平台只展示 A/B 同名 JSON 文件。共同题数为 0 时发布会被 preflight 阻止。&quot;,
+      &quot;next_step&quot;: &quot;修正 A/B 文件名后重新上传并绑定。&quot;,
+      &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py task preflight &lt;task-id&gt; --json&quot;
+    }
+  ],
+  &quot;next_commands&quot;: [
+    &quot;python3 scripts/gsb_cli.py task setup &lt;task-id&gt; --min-per-person 0&quot;,
+    &quot;python3 scripts/gsb_cli.py task preflight &lt;task-id&gt;&quot;
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-TASK-CONFIG-NONE" data-annotate-id="E-TASK-CONFIG-NONE">
+  <div class="head"><div class="title"><span class="id">E-TASK-CONFIG-NONE</span><span class="badge error">error</span><span>NO_CONFIG_FIELDS</span></div><div class="source">source: scripts/gsb_cli.py:911-922</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;没有提供任何权限配置&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;NO_CONFIG_FIELDS&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;task config 命令缺少要更新的字段&quot;,
+      &quot;evidence&quot;: {},
+      &quot;why&quot;: &quot;空配置不会改变任务行为。&quot;,
+      &quot;next_step&quot;: &quot;传入 --transparent-mode、--stats、--show-trace 或 --require-comments。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-RENDER-FILE-NOT-FOUND" data-annotate-id="E-RENDER-FILE-NOT-FOUND">
+  <div class="head"><div class="title"><span class="id">E-RENDER-FILE-NOT-FOUND</span><span class="badge error">error</span><span>RENDERER_FILE_NOT_FOUND</span></div><div class="source">source: scripts/gsb_cli.py:943-951</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;renderer 文件不存在&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;RENDERER_FILE_NOT_FOUND&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;renderer 文件不存在&quot;,
+      &quot;evidence&quot;: {
+        &quot;path&quot;: &quot;&lt;path&gt;&quot;
+      },
+      &quot;why&quot;: &quot;上传接口需要读取本地 renderer.js 内容。&quot;,
+      &quot;next_step&quot;: &quot;确认文件路径，或让 Agent 先生成 renderer.js。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-PUBLISH-PREFLIGHT-BLOCKED" data-annotate-id="E-PUBLISH-PREFLIGHT-BLOCKED">
+  <div class="head"><div class="title"><span class="id">E-PUBLISH-PREFLIGHT-BLOCKED</span><span class="badge error">error</span><span>发布已阻止：preflight 存在阻塞问题</span></div><div class="source">source: scripts/gsb_cli.py:993-1005</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;发布已阻止：preflight 存在阻塞问题&quot;,
+  &quot;preflight&quot;: &quot;&lt;preflight payload&gt;&quot;,
+  &quot;issues&quot;: &quot;&lt;preflight.failures&gt;&quot;
+}</pre></div>
+</article>
+<article class="card error" id="E-EXPORT-NO-POLL" data-annotate-id="E-EXPORT-NO-POLL">
+  <div class="head"><div class="title"><span class="id">E-EXPORT-NO-POLL</span><span class="badge error">error</span><span>EXPORT_POLL_URL_MISSING</span></div><div class="source">source: scripts/gsb_cli.py:1047-1059</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;服务端导出响应缺少 poll_url&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;EXPORT_POLL_URL_MISSING&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;服务端导出响应缺少 poll_url&quot;,
+      &quot;evidence&quot;: {
+        &quot;response&quot;: &quot;&lt;start response&gt;&quot;
+      },
+      &quot;why&quot;: &quot;CLI 无法确认导出任务何时完成。&quot;,
+      &quot;next_step&quot;: &quot;检查服务端导出接口返回值。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-EXPORT-JOB-FAILED" data-annotate-id="E-EXPORT-JOB-FAILED">
+  <div class="head"><div class="title"><span class="id">E-EXPORT-JOB-FAILED</span><span class="badge error">error</span><span>EXPORT_JOB_FAILED</span></div><div class="source">source: scripts/gsb_cli.py:1070-1078</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;服务端导出任务失败&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;EXPORT_JOB_FAILED&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;服务端导出任务失败&quot;,
+      &quot;evidence&quot;: {
+        &quot;status&quot;: &quot;&lt;poll status&gt;&quot;
+      },
+      &quot;why&quot;: &quot;导出后台任务执行出错。&quot;,
+      &quot;next_step&quot;: &quot;根据 error 修复后重新导出。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-EXPORT-TIMEOUT" data-annotate-id="E-EXPORT-TIMEOUT">
+  <div class="head"><div class="title"><span class="id">E-EXPORT-TIMEOUT</span><span class="badge error">error</span><span>EXPORT_TIMEOUT</span></div><div class="source">source: scripts/gsb_cli.py:1080-1088</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;等待导出完成超时&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;EXPORT_TIMEOUT&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;等待导出完成超时&quot;,
+      &quot;evidence&quot;: {
+        &quot;timeout_seconds&quot;: &quot;&lt;seconds&gt;&quot;,
+        &quot;last_status&quot;: &quot;&lt;status&gt;&quot;
+      },
+      &quot;why&quot;: &quot;导出任务可能仍在后台运行，也可能卡住。&quot;,
+      &quot;next_step&quot;: &quot;稍后重试，或在网页任务管理页查看导出状态。&quot;,
+      &quot;rerun&quot;: &quot;&lt;current command&gt;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="PF-ERR-TASK-NOT-FOUND" data-annotate-id="PF-ERR-TASK-NOT-FOUND">
+  <div class="head"><div class="title"><span class="id">PF-ERR-TASK-NOT-FOUND</span><span class="badge error">error</span><span>preflight TASK_NOT_FOUND</span></div><div class="source">source: app/server.py:2207-2217</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;fail&quot;,
+  &quot;severity&quot;: &quot;error&quot;,
+  &quot;code&quot;: &quot;TASK_NOT_FOUND&quot;,
+  &quot;problem&quot;: &quot;任务不存在&quot;,
+  &quot;evidence&quot;: {
+    &quot;task_id&quot;: &quot;&lt;task-id&gt;&quot;
+  },
+  &quot;why&quot;: &quot;平台无法发布不存在的任务。&quot;,
+  &quot;next_step&quot;: &quot;确认 task_id 是否正确，或先创建任务。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py task create --task-id &lt;task-id&gt;&quot;
+}</pre></div>
+</article>
+<article class="card error" id="PF-ERR-DATA-NOT-BOUND" data-annotate-id="PF-ERR-DATA-NOT-BOUND">
+  <div class="head"><div class="title"><span class="id">PF-ERR-DATA-NOT-BOUND</span><span class="badge error">error</span><span>preflight DATA_SOURCE_NOT_BOUND</span></div><div class="source">source: app/server.py:2236-2244</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;fail&quot;,
+  &quot;severity&quot;: &quot;error&quot;,
+  &quot;code&quot;: &quot;DATA_SOURCE_NOT_BOUND&quot;,
+  &quot;problem&quot;: &quot;GSB 任务还没有绑定两个数据源&quot;,
+  &quot;evidence&quot;: {
+    &quot;data_mode&quot;: &quot;&lt;mode&gt;&quot;,
+    &quot;count_a&quot;: 0,
+    &quot;count_b&quot;: 0
+  },
+  &quot;why&quot;: &quot;评估页需要 A/B 两个版本的数据。未绑定时评估列表为空，发布后评估者无法开始。&quot;,
+  &quot;next_step&quot;: &quot;先上传两个 JSON 数据集，再把它们绑定到该任务。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py task bind &lt;task-id&gt; --a &lt;dataset-a&gt; --b &lt;dataset-b&gt;&quot;
+}</pre></div>
+</article>
+<article class="card error" id="PF-ERR-EMPTY-DATASET" data-annotate-id="PF-ERR-EMPTY-DATASET">
+  <div class="head"><div class="title"><span class="id">PF-ERR-EMPTY-DATASET</span><span class="badge error">error</span><span>preflight EMPTY_VERSION_DATASET</span></div><div class="source">source: app/server.py:2253-2260</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;fail&quot;,
+  &quot;severity&quot;: &quot;error&quot;,
+  &quot;code&quot;: &quot;EMPTY_VERSION_DATASET&quot;,
+  &quot;problem&quot;: &quot;至少一个版本没有可加载的 JSON 数据&quot;,
+  &quot;evidence&quot;: {
+    &quot;count_a&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;count_b&quot;: &quot;&lt;count&gt;&quot;
+  },
+  &quot;why&quot;: &quot;服务端只读取版本目录第一层的 .json 文件；空目录会让任务没有可评估内容。&quot;,
+  &quot;next_step&quot;: &quot;确认每个版本目录第一层都有一个 JSON 对象文件对应一条 case。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py dataset check --a &lt;dir-a&gt; --b &lt;dir-b&gt; --json&quot;
+}</pre></div>
+</article>
+<article class="card error" id="PF-ERR-ZERO-COMMON" data-annotate-id="PF-ERR-ZERO-COMMON">
+  <div class="head"><div class="title"><span class="id">PF-ERR-ZERO-COMMON</span><span class="badge error">error</span><span>preflight ZERO_COMMON_ITEMS</span></div><div class="source">source: app/server.py:2262-2269</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;fail&quot;,
+  &quot;severity&quot;: &quot;error&quot;,
+  &quot;code&quot;: &quot;ZERO_COMMON_ITEMS&quot;,
+  &quot;problem&quot;: &quot;A/B 版本没有同名 JSON 文件，任务会是 0 条&quot;,
+  &quot;evidence&quot;: {
+    &quot;count_a&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;count_b&quot;: &quot;&lt;count&gt;&quot;,
+    &quot;common_count&quot;: 0
+  },
+  &quot;why&quot;: &quot;平台把去掉 .json 后的文件名作为 query_id，只展示两个版本目录内都存在的同名 JSON。&quot;,
+  &quot;next_step&quot;: &quot;把同一条 case 在两个版本目录内改成完全相同的文件名，例如 item_0001.json。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py dataset check --a &lt;dir-a&gt; --b &lt;dir-b&gt; --json&quot;
+}</pre></div>
+</article>
+<article class="card error" id="PF-ERR-SETUP-ZERO" data-annotate-id="PF-ERR-SETUP-ZERO">
+  <div class="head"><div class="title"><span class="id">PF-ERR-SETUP-ZERO</span><span class="badge error">error</span><span>preflight SETUP_ZERO_ITEMS</span></div><div class="source">source: app/server.py:2274-2281</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;fail&quot;,
+  &quot;severity&quot;: &quot;error&quot;,
+  &quot;code&quot;: &quot;SETUP_ZERO_ITEMS&quot;,
+  &quot;problem&quot;: &quot;分配策略记录的总题数为 0&quot;,
+  &quot;evidence&quot;: {
+    &quot;total_items&quot;: 0,
+    &quot;common_count&quot;: &quot;&lt;count&gt;&quot;
+  },
+  &quot;why&quot;: &quot;发布后评估者不会收到任何题目。&quot;,
+  &quot;next_step&quot;: &quot;重新绑定数据源并重新保存分配策略。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py task setup &lt;task-id&gt; --min-per-person 0&quot;
+}</pre></div>
+</article>
+<article class="card error" id="PF-ERR-MIN-PER-PERSON" data-annotate-id="PF-ERR-MIN-PER-PERSON">
+  <div class="head"><div class="title"><span class="id">PF-ERR-MIN-PER-PERSON</span><span class="badge error">error</span><span>preflight MIN_PER_PERSON_INVALID</span></div><div class="source">source: app/server.py:2290-2297</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;fail&quot;,
+  &quot;severity&quot;: &quot;error&quot;,
+  &quot;code&quot;: &quot;MIN_PER_PERSON_INVALID&quot;,
+  &quot;problem&quot;: &quot;每人最少评估条数无效&quot;,
+  &quot;evidence&quot;: {
+    &quot;min_per_person&quot;: 0
+  },
+  &quot;why&quot;: &quot;分配算法需要一个正数来生成评估任务。&quot;,
+  &quot;next_step&quot;: &quot;重新配置每人最少评估条数；传 0 表示每人评估全部题目。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py task setup &lt;task-id&gt; --min-per-person 0&quot;
+}</pre></div>
+</article>
+<article class="card error" id="PF-ERR-SETUP-MISSING" data-annotate-id="PF-ERR-SETUP-MISSING">
+  <div class="head"><div class="title"><span class="id">PF-ERR-SETUP-MISSING</span><span class="badge error">error</span><span>preflight SETUP_MISSING</span></div><div class="source">source: app/server.py:2304-2311</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;fail&quot;,
+  &quot;severity&quot;: &quot;error&quot;,
+  &quot;code&quot;: &quot;SETUP_MISSING&quot;,
+  &quot;problem&quot;: &quot;GSB 任务还没有保存分配策略&quot;,
+  &quot;evidence&quot;: {
+    &quot;setup_complete&quot;: false
+  },
+  &quot;why&quot;: &quot;没有分配策略时，评估者无法稳定收到应评估的题目集合。&quot;,
+  &quot;next_step&quot;: &quot;配置任务名称、每人最少评估条数和锚点题数量。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py task setup &lt;task-id&gt; --min-per-person 0&quot;
+}</pre></div>
+</article>
+<article class="card error" id="PF-ERR-PREVIEW-DATA" data-annotate-id="PF-ERR-PREVIEW-DATA">
+  <div class="head"><div class="title"><span class="id">PF-ERR-PREVIEW-DATA</span><span class="badge error">error</span><span>preflight PREVIEW_DATA_NOT_BOUND</span></div><div class="source">source: app/server.py:2312-2320</div></div>
+  <div class="body"><pre>{
+  &quot;status&quot;: &quot;fail&quot;,
+  &quot;severity&quot;: &quot;error&quot;,
+  &quot;code&quot;: &quot;PREVIEW_DATA_NOT_BOUND&quot;,
+  &quot;problem&quot;: &quot;预览任务还没有绑定数据源&quot;,
+  &quot;evidence&quot;: {
+    &quot;data_mode&quot;: &quot;unselected&quot;,
+    &quot;count_a&quot;: 0
+  },
+  &quot;why&quot;: &quot;预览模式至少需要一个 JSON 数据集，否则页面没有可展示内容。&quot;,
+  &quot;next_step&quot;: &quot;上传一个 JSON 数据集并绑定到任务。&quot;,
+  &quot;rerun&quot;: &quot;python3 scripts/gsb_cli.py task bind &lt;task-id&gt; --a &lt;dataset&gt;&quot;
+}</pre></div>
+</article>
+<article class="card error" id="E-SYS-INTERRUPTED" data-annotate-id="E-SYS-INTERRUPTED">
+  <div class="head"><div class="title"><span class="id">E-SYS-INTERRUPTED</span><span class="badge error">error</span><span>INTERRUPTED</span></div><div class="source">source: scripts/gsb_cli.py:1328-1331</div></div>
+  <div class="body"><pre>{
+  &quot;ok&quot;: false,
+  &quot;message&quot;: &quot;操作被中断&quot;,
+  &quot;issues&quot;: [
+    {
+      &quot;code&quot;: &quot;INTERRUPTED&quot;,
+      &quot;severity&quot;: &quot;error&quot;,
+      &quot;status&quot;: &quot;fail&quot;,
+      &quot;problem&quot;: &quot;用户中断了 CLI 执行&quot;,
+      &quot;evidence&quot;: {},
+      &quot;why&quot;: &quot;&quot;,
+      &quot;next_step&quot;: &quot;&quot;,
+      &quot;rerun&quot;: &quot;&quot;
+    }
+  ]
+}</pre></div>
+</article>
+<article class="card error" id="E-SYS-ARGPARSE" data-annotate-id="E-SYS-ARGPARSE">
+  <div class="head"><div class="title"><span class="id">E-SYS-ARGPARSE</span><span class="badge error">error</span><span>参数解析错误当前不是结构化 issue</span></div><div class="source">source: scripts/gsb_cli.py:715-725, 761-763, argparse</div></div>
+  <div class="body"><pre>{
+  &quot;current_behavior&quot;: &quot;raise SystemExit 或 argparse.ArgumentTypeError，通常打印文本并退出；不保证 --json 结构化输出。&quot;,
+  &quot;examples&quot;: [
+    &quot;--root requires --version-a&quot;,
+    &quot;dataset check requires DIR or --a&quot;,
+    &quot;dataset upload requires DIR or --a/--b&quot;,
+    &quot;expected boolean, got &#x27;&lt;value&gt;&#x27;&quot;
+  ]
+}</pre><div class="note">备注：这是当前真实缺口，不是一个已结构化的 CLI message。</div></div>
+</article></div></section></main></body></html>

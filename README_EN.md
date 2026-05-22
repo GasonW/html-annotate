@@ -37,6 +37,7 @@ Select text → Highlight → Comment + screenshots → JSON on disk → AI read
 | 🖊️ **Text annotation** | Select any text, click the floating button, leave a comment |
 | 🖼️ **Image paste** | Cmd+V to paste clipboard images, or click to upload; stored alongside text |
 | 🤖 **AI-consumable output** | Annotations saved as `.annotations.json`; `read-annotations.py` extracts images as PNGs |
+| ✅ **Resolution sync** | Agents can mark each annotation resolved after applying it; the page updates open counts |
 | 📄 **Zero source modification** | Annotations live in a separate file — your HTML stays untouched |
 
 ## 30 seconds to start
@@ -59,7 +60,7 @@ Then just say:
 
 > /annotate path/to/report.html
 
-Annotate in the browser, then say **"apply my annotations"** — Claude reads the JSON, extracts images, and edits the source HTML.
+Annotate in the browser, then say **"apply my annotations"** — Claude reads the JSON, extracts images, edits the source HTML one item at a time, and marks completed annotations resolved.
 
 ### Without Claude Code
 
@@ -68,6 +69,7 @@ python ~/.claude/skills/annotate/scripts/annotate-server.py /path/to/html/dir
 # → Annotate in browser at http://localhost:8787/your-file.html
 # → Then pipe to any agent:
 python ~/.claude/skills/annotate/scripts/read-annotations.py file.annotations.json --open-only
+python ~/.claude/skills/annotate/scripts/read-annotations.py file.annotations.json --resolve amk7x...
 ```
 
 ## Data Format
@@ -80,6 +82,7 @@ python ~/.claude/skills/annotate/scripts/read-annotations.py file.annotations.js
     "comment": "The user's comment",
     "images": ["data:image/png;base64,..."],
     "resolved": false,
+    "resolvedAt": null,
     "createdAt": 1716153600000
   }
 ]

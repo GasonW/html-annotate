@@ -42,6 +42,7 @@
 | 🖊️ **文字划线批注** | 选中任意文本，点击浮动按钮添加评论 |
 | 🖼️ **图片批注** | Cmd+V 粘贴剪贴板图片，或点击上传；图片与文字一起存储 |
 | 🤖 **AI 可直接消费** | 批注存为 `.annotations.json`；`read-annotations.py` 提取图片为 PNG，AI Agent 可直接阅读 |
+| ✅ **处理状态回写** | Agent 处理完单条批注后可标记已解决，页面会同步更新未解决数量 |
 | 📄 **零侵入源文件** | 批注独立存储，源 HTML 完全不被修改 |
 
 ## 30 秒开始
@@ -78,7 +79,14 @@ git clone https://github.com/GasonW/html-annotate.git ~/.claude/skills/annotate
 请根据批注修改
 ```
 
-Claude 会读取 JSON、提取图片、逐条修改源 HTML。
+Claude 会读取 JSON、提取图片、逐条修改源 HTML，并在每条处理完成后回写已解决状态。
+
+手动查看或标记状态：
+
+```bash
+python ~/.claude/skills/annotate/scripts/read-annotations.py file.annotations.json --open-only
+python ~/.claude/skills/annotate/scripts/read-annotations.py file.annotations.json --resolve amk7x...
+```
 
 ## 数据结构
 
@@ -90,6 +98,7 @@ Claude 会读取 JSON、提取图片、逐条修改源 HTML。
     "comment": "用户的评论文本",
     "images": ["data:image/png;base64,..."],
     "resolved": false,
+    "resolvedAt": null,
     "createdAt": 1716153600000
   }
 ]
